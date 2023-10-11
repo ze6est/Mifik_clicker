@@ -4,7 +4,7 @@ using UnityEngine;
 public class MifiksStaticData : ScriptableObject
 {
     public MifiksName Name;
-    [Range(1, 100000000)]
-    public int CostPoints;
+    [Range(1L, 100000000L)]
+    public long CostPoints;
     public GameObject Prefab;
 }

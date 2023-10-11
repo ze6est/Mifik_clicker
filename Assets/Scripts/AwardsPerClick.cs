@@ -6,15 +6,15 @@ public class AwardsPerClick : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _pointsPerClickHud;
 
-    private int _pointsPerClick;
+    private long _pointsPerClick;
 
-    public int PointsPerClick => _pointsPerClick;
+    public long PointsPerClick => _pointsPerClick;
 
     private void OnValidate() => 
         _pointsPerClickHud = gameObject.GetComponent<TextMeshProUGUI>();
 
     private void Awake() => 
-        _pointsPerClick = 1;
+        _pointsPerClick = 1L;
 
     private void Start() => 
         RefreshText();

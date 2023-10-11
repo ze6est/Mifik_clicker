@@ -9,7 +9,7 @@ public class ClickButton : MonoBehaviour
 
     private Button _clickButton;
 
-    public event Action<int> ButtonClicked;
+    public event Action<long> ButtonClicked;
 
     private void OnValidate()
     {

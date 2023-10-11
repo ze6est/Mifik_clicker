@@ -5,9 +5,10 @@ using TMPro;
 public class Points : MonoBehaviour
 {
     [SerializeField] private ClickButton _clickButton;
+    [SerializeField] private AutoClick _autoClick;
     [SerializeField] private TextMeshProUGUI _pointsHud;
 
-    private int _points;
+    private long _points;
 
     private void OnValidate()
     {
@@ -17,17 +18,21 @@ public class Points : MonoBehaviour
 
     private void Awake()
     {
-        _points = 1;
+        _points = 1L;
         _clickButton.ButtonClicked += RefreshPoints;
+        _autoClick.SecondsPassed += RefreshPoints;
     }
 
     private void Start() =>
         RefreshText();
 
-    private void OnDestroy() => 
+    private void OnDestroy()
+    {
         _clickButton.ButtonClicked -= RefreshPoints;
+        _autoClick.SecondsPassed -= RefreshPoints;
+    }
 
-    private void RefreshPoints(int count)
+    private void RefreshPoints(long count)
     {
         _points += count;
         RefreshText();
