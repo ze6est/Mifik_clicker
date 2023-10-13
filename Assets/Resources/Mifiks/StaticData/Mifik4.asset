@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce07ff31fabe5124fb0cf06dc3e1c91c, type: 3}
+  m_Name: Mifik4
+  m_EditorClassIdentifier: 
+  NameId: 30
+  CostPoints: 10000
+  PointsPerSecond: 4
+  UpgradeCount: 4
+  Icon: {fileID: 0}

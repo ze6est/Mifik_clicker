@@ -1,10 +1,13 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 [CreateAssetMenu(fileName = "MifiksData", menuName = "StaticData/Mifik", order = 51)]
 public class MifiksStaticData : ScriptableObject
 {
-    public MifiksName Name;
+    public MifiksName NameId;
     [Range(1L, 100000000L)]
     public long CostPoints;
-    public GameObject Prefab;
+    public long PointsPerSecond;
+    public int UpgradeCount;
+    public Image Icon;
 }
