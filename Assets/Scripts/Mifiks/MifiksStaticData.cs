@@ -6,8 +6,10 @@ public class MifiksStaticData : ScriptableObject
 {
     public MifiksName NameId;
     [Range(1L, 100000000L)]
-    public long CostPoints;
-    public long PointsPerSecond;
+    public long CostUnlocked;
+    public long PointsPerAutoClick;
+    public long TimeSecondsAutoClick;
     public long UpgradeCount;
+    public long UpgradeTimeCount;
     public Image Icon;
 }

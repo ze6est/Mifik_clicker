@@ -25,10 +25,10 @@ public class Factory
         foreach (MifiksStaticData mifik in mifiks)
         {
             LockedButton lockedButton = block.GetComponentInChildren<LockedButton>();
-            lockedButton.Construct(_points, mifik.CostPoints);
+            lockedButton.Construct(_points, mifik.CostUnlocked);
 
             Card card = block.GetComponentInChildren<Card>();
-            card.Construct(mifik.NameId, mifik.PointsPerSecond, mifik.UpgradeCount, mifik.Icon, lockedButton, _autoClick, _points);            
+            card.Construct(mifik.NameId, mifik.PointsPerAutoClick, mifik.TimeSecondsAutoClick, mifik.UpgradeCount, mifik.UpgradeTimeCount, mifik.Icon, lockedButton, _autoClick, _points);            
 
             Object.Instantiate(block, container.transform);
         }

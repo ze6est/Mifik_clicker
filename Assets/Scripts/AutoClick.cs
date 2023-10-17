@@ -32,7 +32,7 @@ public class AutoClick : MonoBehaviour
             StopCoroutine(_getPoints);
     }
 
-    public void SetPointsPerSecond(long pointsPerSecond)
+    public void SetPointsPerAutoClick(long pointsPerSecond)
     {
         _pointsPerSecond += pointsPerSecond;
     }

@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: Mifik3
   m_EditorClassIdentifier: 
   NameId: 20
-  CostPoints: 1000
-  PointsPerSecond: 3
+  CostUnlocked: 300
+  PointsPerAutoClick: 3
+  TimeSecondsAutoClick: 90
   UpgradeCount: 300
+  UpgradeTimeCount: 300
   Icon: {fileID: 0}

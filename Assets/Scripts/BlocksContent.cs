@@ -11,6 +11,6 @@ public class BlocksContent : MonoBehaviour
     {
         _factory = new Factory(_points, _autoClick);        
 
-        _factory.InstantiateBloks(gameObject);        
+        _factory.InstantiateBloks(gameObject);
     }
 }
