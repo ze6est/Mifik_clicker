@@ -15,5 +15,5 @@ MonoBehaviour:
   NameId: 10
   CostPoints: 100
   PointsPerSecond: 2
-  UpgradeCount: 2
+  UpgradeCount: 200
   Icon: {fileID: 0}

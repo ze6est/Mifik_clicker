@@ -59,6 +59,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2977100227808537928}
     m_Modifications:
+    - target: {fileID: -1555133188704440832, guid: d26430a36dee45642817d9e01e1ed7b5, type: 3}
+      propertyPath: _isLocked
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -1555133188704440832, guid: d26430a36dee45642817d9e01e1ed7b5, type: 3}
+      propertyPath: _pointsPerUnlocked
+      value: 100000
+      objectReference: {fileID: 0}
+    - target: {fileID: 905056103176150793, guid: d26430a36dee45642817d9e01e1ed7b5, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 5915cdc174101e540b3349e21ee2cd74, type: 3}
     - target: {fileID: 905056103176150798, guid: d26430a36dee45642817d9e01e1ed7b5, type: 3}
       propertyPath: m_Name
       value: LockedButton
@@ -147,6 +159,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 905056103475222356, guid: d26430a36dee45642817d9e01e1ed7b5, type: 3}
+      propertyPath: m_text
+      value: 100000
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -157,6 +173,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 905056103176150799, guid: d26430a36dee45642817d9e01e1ed7b5, type: 3}
   m_PrefabInstance: {fileID: 2729092696508586898}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5743393286552827282 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: -1555133188704440832, guid: d26430a36dee45642817d9e01e1ed7b5, type: 3}
+  m_PrefabInstance: {fileID: 2729092696508586898}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a12ebac756fa9f0489c226acdecbacc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &6387282790568951791
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -165,6 +192,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2977100227808537928}
     m_Modifications:
+    - target: {fileID: -2786412144543276880, guid: 01f11c04867a49545817f44fc5093a8a, type: 3}
+      propertyPath: _icon
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: -2786412144543276880, guid: 01f11c04867a49545817f44fc5093a8a, type: 3}
+      propertyPath: _lockedButton
+      value: 
+      objectReference: {fileID: 5743393286552827282}
+    - target: {fileID: -2786412144543276880, guid: 01f11c04867a49545817f44fc5093a8a, type: 3}
+      propertyPath: _pointsPerSecond
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8211442253369002801, guid: 01f11c04867a49545817f44fc5093a8a, type: 3}
+      propertyPath: m_text
+      value: 500
+      objectReference: {fileID: 0}
     - target: {fileID: 8211442254048958556, guid: 01f11c04867a49545817f44fc5093a8a, type: 3}
       propertyPath: m_Name
       value: Card
@@ -252,6 +295,14 @@ PrefabInstance:
     - target: {fileID: 8211442254048958559, guid: 01f11c04867a49545817f44fc5093a8a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8211442254478816064, guid: 01f11c04867a49545817f44fc5093a8a, type: 3}
+      propertyPath: m_text
+      value: Mifiks5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8211442254621207221, guid: 01f11c04867a49545817f44fc5093a8a, type: 3}
+      propertyPath: m_text
+      value: +5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

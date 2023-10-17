@@ -5,7 +5,7 @@ using System;
 
 [RequireComponent(typeof(TextMeshProUGUI))]
 public class AutoClick : MonoBehaviour
-{
+{    
     [SerializeField] private TextMeshProUGUI _pointsPerSecondHud;
 
     private long _pointsPerSecond;
@@ -18,7 +18,7 @@ public class AutoClick : MonoBehaviour
 
     private void Awake()
     {
-        _pointsPerSecond = 1;
+        _pointsPerSecond = 0;        
     }
 
     private void Start()
@@ -28,7 +28,13 @@ public class AutoClick : MonoBehaviour
 
     private void OnDestroy()
     {
-        StopCoroutine(_getPoints);
+        if(_getPoints != null)
+            StopCoroutine(_getPoints);
+    }
+
+    public void SetPointsPerSecond(long pointsPerSecond)
+    {
+        _pointsPerSecond += pointsPerSecond;
     }
 
     private IEnumerator GetPoints()
@@ -45,5 +51,5 @@ public class AutoClick : MonoBehaviour
     }
 
     private void RefreshText() =>
-        _pointsPerSecondHud.text = $"+{_pointsPerSecond}";
+        _pointsPerSecondHud.text = $"+{_pointsPerSecond}";    
 }

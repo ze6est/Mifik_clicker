@@ -1,16 +1,20 @@
-﻿using TMPro;
+﻿using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class LockedButton : MonoBehaviour
 {
+    [SerializeField] private Button _button;
     [SerializeField] private TextMeshProUGUI _pointsPerUnlockedHud;
     [SerializeField] private Image _icon;
     [SerializeField] private Image _lockedImage;
+    [SerializeField] private bool _isLocked;
+    [SerializeField] private Points _points;
+    [SerializeField] private long _pointsPerUnlocked;
 
-    private bool _isLocked;
-    private Points _points;
-    private long _pointsPerUnlocked;
+    public event Action CardUnlocked;
+
 
     public void Construct(Points points, long pointsPerUnlocked)
     {
@@ -29,7 +33,31 @@ public class LockedButton : MonoBehaviour
 
     private void OnValidate()
     {
+        _button = gameObject.GetComponent<Button>();
         _pointsPerUnlockedHud = gameObject.GetComponentInChildren<TextMeshProUGUI>();
         _icon = gameObject.GetComponent<Image>();
+    }
+
+    private void Awake()
+    {
+        _button.onClick.AddListener(Disable);
+    }
+
+    private void OnDestroy()
+    {
+        _button.onClick.RemoveListener(Disable);
+    }
+
+    private void Disable()
+    {
+        if(_points.CurrentPoints >= _pointsPerUnlocked)
+        {
+            CardUnlocked?.Invoke();
+
+            _points.RefreshPoints(-_pointsPerUnlocked);
+
+            gameObject.SetActive(false);
+            _isLocked = false;            
+        }
     }
 }

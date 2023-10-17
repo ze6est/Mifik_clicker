@@ -8,6 +8,6 @@ public class MifiksStaticData : ScriptableObject
     [Range(1L, 100000000L)]
     public long CostPoints;
     public long PointsPerSecond;
-    public int UpgradeCount;
+    public long UpgradeCount;
     public Image Icon;
 }

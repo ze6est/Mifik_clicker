@@ -1,14 +1,17 @@
 using UnityEngine;
 using TMPro;
+using System;
 
 [RequireComponent(typeof(TextMeshProUGUI))]
-public class Points : MonoBehaviour
+public class Points : MonoBehaviour, ISavedProgress
 {
     [SerializeField] private ClickButton _clickButton;
-    [SerializeField] private AutoClick _autoClick;
+    [SerializeField] private AutoClick _autoClick;    
     [SerializeField] private TextMeshProUGUI _pointsHud;
 
     private long _points;
+
+    public long CurrentPoints => _points;
 
     private void OnValidate()
     {
@@ -20,7 +23,7 @@ public class Points : MonoBehaviour
     {
         _points = 1L;
         _clickButton.ButtonClicked += RefreshPoints;
-        _autoClick.SecondsPassed += RefreshPoints;
+        _autoClick.SecondsPassed += RefreshPoints;        
     }
 
     private void Start() =>
@@ -32,12 +35,22 @@ public class Points : MonoBehaviour
         _autoClick.SecondsPassed -= RefreshPoints;
     }
 
-    private void RefreshPoints(long count)
+    public void UpdateProgress(PlayerProgress progress)
+    {
+        progress.Points = _points;
+    }
+
+    public void LoadProgress(PlayerProgress progress)
+    {
+        
+    }
+
+    public void RefreshPoints(long count)
     {
         _points += count;
         RefreshText();
     }
 
     private void RefreshText() =>
-        _pointsHud.text = $"{_points}";
+        _pointsHud.text = $"{_points}";    
 }
