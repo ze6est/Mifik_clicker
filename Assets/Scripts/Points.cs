@@ -5,8 +5,7 @@ using System;
 [RequireComponent(typeof(TextMeshProUGUI))]
 public class Points : MonoBehaviour, ISavedProgress
 {
-    [SerializeField] private ClickButton _clickButton;
-    [SerializeField] private AutoClick _autoClick;    
+    [SerializeField] private ClickButton _clickButton;        
     [SerializeField] private TextMeshProUGUI _pointsHud;
 
     private long _points;
@@ -22,8 +21,7 @@ public class Points : MonoBehaviour, ISavedProgress
     private void Awake()
     {
         _points = 1L;
-        _clickButton.ButtonClicked += RefreshPoints;
-        _autoClick.SecondsPassed += RefreshPoints;        
+        _clickButton.ButtonClicked += RefreshPoints;        
     }
 
     private void Start() =>
@@ -31,8 +29,7 @@ public class Points : MonoBehaviour, ISavedProgress
 
     private void OnDestroy()
     {
-        _clickButton.ButtonClicked -= RefreshPoints;
-        _autoClick.SecondsPassed -= RefreshPoints;
+        _clickButton.ButtonClicked -= RefreshPoints;        
     }
 
     public void UpdateProgress(PlayerProgress progress)

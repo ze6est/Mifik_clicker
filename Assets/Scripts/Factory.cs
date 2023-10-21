@@ -6,13 +6,11 @@ using Object = UnityEngine.Object;
 public class Factory
 {
     private StaticDataService _staticDataService = new StaticDataService();
-    private Points _points;
-    private AutoClick _autoClick;
+    private Points _points;    
 
-    public Factory(Points points, AutoClick autoClick)
+    public Factory(Points points)
     {
-        _points = points;
-        _autoClick = autoClick;
+        _points = points;        
     }
 
     public void InstantiateBloks(GameObject container)
@@ -28,7 +26,7 @@ public class Factory
             lockedButton.Construct(_points, mifik.CostUnlocked);
 
             Card card = block.GetComponentInChildren<Card>();
-            card.Construct(mifik.NameId, mifik.PointsPerAutoClick, mifik.TimeSecondsAutoClick, mifik.UpgradeCount, mifik.UpgradeTimeCount, mifik.Icon, lockedButton, _autoClick, _points);            
+            card.Construct(mifik.NameId, mifik.PointsPerAutoClick, mifik.TimeSecondsAutoClick, mifik.UpgradeCount, mifik.UpgradeTimeCount, mifik.Icon, lockedButton, _points);            
 
             Object.Instantiate(block, container.transform);
         }

@@ -15,7 +15,6 @@ public class LockedButton : MonoBehaviour
 
     public event Action CardUnlocked;
 
-
     public void Construct(Points points, long pointsPerUnlocked)
     {
         _points = points;
