@@ -15,19 +15,14 @@ public class LockedButton : MonoBehaviour
 
     public event Action CardUnlocked;
 
-    public void Construct(Points points, long pointsPerUnlocked)
+    public void Construct(Points points, long pointsPerUnlocked, bool isLocked)
     {
         _points = points;
         _pointsPerUnlocked = pointsPerUnlocked;
         _pointsPerUnlockedHud.text = $"{_pointsPerUnlocked}";
-        _isLocked = true;
+        _isLocked = isLocked;
         _icon.sprite = Resources.Load<Sprite>("Images/LockedButton/Images");
-        _lockedImage.sprite = Resources.Load<Sprite>("Images/LockedButton/GUI/Locked");
-
-        if (_isLocked)
-            gameObject.SetActive(true);
-        else
-            gameObject.SetActive(false);
+        _lockedImage.sprite = Resources.Load<Sprite>("Images/LockedButton/GUI/Locked");        
     }
 
     private void OnValidate()
@@ -40,6 +35,14 @@ public class LockedButton : MonoBehaviour
     private void Awake()
     {
         _button.onClick.AddListener(Disable);
+
+        if (_isLocked)
+            gameObject.SetActive(true);
+        else
+        {
+            gameObject.SetActive(false);
+            CardUnlocked?.Invoke();
+        }
     }
 
     private void OnDestroy()

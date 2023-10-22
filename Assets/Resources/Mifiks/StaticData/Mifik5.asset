@@ -15,7 +15,10 @@ MonoBehaviour:
   NameId: 40
   CostUnlocked: 1000
   PointsPerAutoClick: 7
+  UpgradeAutoClickCost: 4
+  UpgradeCountAutoClick: 4
   TimeSecondsAutoClick: 70
-  UpgradeCount: 500
-  UpgradeTimeCount: 500
+  UpgradeTimeCost: 4
+  UpgradeCountTime: 4
   Icon: {fileID: 0}
+  IsLocked: 1

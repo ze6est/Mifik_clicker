@@ -1,6 +1,5 @@
 using UnityEngine;
 using TMPro;
-using System;
 
 [RequireComponent(typeof(TextMeshProUGUI))]
 public class Points : MonoBehaviour, ISavedProgress
@@ -13,8 +12,7 @@ public class Points : MonoBehaviour, ISavedProgress
     public long CurrentPoints => _points;
 
     private void OnValidate()
-    {
-        _clickButton = FindObjectOfType<ClickButton>();
+    {        
         _pointsHud = gameObject.GetComponent<TextMeshProUGUI>();
     }
 

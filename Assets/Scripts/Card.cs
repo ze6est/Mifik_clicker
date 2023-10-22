@@ -16,21 +16,27 @@ public class Card : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _name;
     [SerializeField] private TextMeshProUGUI _pointsPerAutoClickHUD;
     [SerializeField] private TextMeshProUGUI _timeAutoClickHUD;
-    [SerializeField] private TextMeshProUGUI _upgradeCountHUD;
-    [SerializeField] private TextMeshProUGUI _upgradeTimeCountHUD;
+    [SerializeField] private TextMeshProUGUI _upgradeAutoClickCostHUD;
+    [SerializeField] private TextMeshProUGUI _upgradeTimeCostHUD;
     [Header("Images")]
     [SerializeField] private Image _icon;
     [SerializeField] private Image _timeAutoClickImage;
 
-
+    [Header("AutoClick")]
     [SerializeField] private long _pointsPerAutoClick;
+    [SerializeField] private long _upgradeAutoClickCost;
+    [SerializeField] private int _upgradeCountAutoClick;
+    [Header("Time")]
     [SerializeField] private long _timeAutoClick;
-    [SerializeField] private long _upgradeCount;
-    [SerializeField] private long _upgradeTimeCount;
-    
-    private Coroutine _getPoints;
+    [SerializeField] private long _upgradeTimeCost;
+    [SerializeField] private int _upgradeCountTime;
 
-    public void Construct(MifiksName nameId, long pointsPerAutoClick, long timeAutoClick, long upgradeCount, long upgradeTimeCount, Image icon, LockedButton lockedButton, Points points)
+    private Coroutine _getPoints;
+    private int _upgradeCountAutoClickCurrent;
+    private int _upgradeCountTimeCurrent;
+
+    public void Construct(MifiksName nameId, long pointsPerAutoClick, long timeAutoClick, long upgradeAutoClickCost, int upgradeCountAutoClick,
+        long upgradeTimeCost, int upgradeCountTime, Image icon, LockedButton lockedButton, Points points)
     {
         _lockedButton = lockedButton;        
         _points = points;
@@ -43,11 +49,13 @@ public class Card : MonoBehaviour
         _timeAutoClickHUD.text = $"{timeAutoClick} сек";
         _timeAutoClick = timeAutoClick;
 
-        _upgradeCountHUD.text = $"{upgradeCount}";
-        _upgradeCount = upgradeCount;
+        _upgradeAutoClickCostHUD.text = $"{upgradeAutoClickCost}";
+        _upgradeAutoClickCost = upgradeAutoClickCost;
+        _upgradeCountAutoClick = upgradeCountAutoClick;
 
-        _upgradeTimeCountHUD.text = $"{upgradeTimeCount}";
-        _upgradeTimeCount = upgradeTimeCount;
+        _upgradeTimeCostHUD.text = $"{upgradeTimeCost}";
+        _upgradeTimeCost = upgradeTimeCost;
+        _upgradeCountTime = upgradeCountTime;
 
         _icon = icon;        
     }    
@@ -55,14 +63,17 @@ public class Card : MonoBehaviour
     private void Awake()
     {
         _lockedButton.CardUnlocked += OnCardUnlocked;
-        _upgradePointsPerClickButton.onClick.AddListener(AddPointsPerTime);
+        _upgradePointsPerClickButton.onClick.AddListener(UpgradeAutoClick);
+        _upgradeTimeButton.onClick.AddListener(UpgradeTime);
     }
 
     private void OnDestroy()
     {
         _lockedButton.CardUnlocked -= OnCardUnlocked;
+        _upgradePointsPerClickButton.onClick.RemoveListener(UpgradeAutoClick);
+        _upgradeTimeButton.onClick.RemoveListener(UpgradeTime);
 
-        if(_getPoints != null)
+        if (_getPoints != null)
             StopCoroutine(_getPoints);
     }
 
@@ -75,15 +86,44 @@ public class Card : MonoBehaviour
         _getPoints = StartCoroutine(GetPoints());
     }
 
-    private void AddPointsPerTime()
+    private void UpgradeAutoClick()
     {
-        if (_points.CurrentPoints >= _upgradeCount)
+        if (_points.CurrentPoints >= _upgradeAutoClickCost && _upgradeCountAutoClick > _upgradeCountAutoClickCurrent)
         {
+            _upgradeCountAutoClickCurrent += 1;
+
             _pointsPerAutoClick *= 2;
             _pointsPerAutoClickHUD.text = $"+{_pointsPerAutoClick}";            
 
-            _points.RefreshPoints(-_upgradeCount);
+            _points.RefreshPoints(-_upgradeAutoClickCost);
+
+            _upgradeAutoClickCost *= 2;
+
+            _upgradeAutoClickCostHUD.text = $"{_upgradeAutoClickCost}";
+
+            if(_upgradeCountAutoClick <= _upgradeCountAutoClickCurrent)
+                _upgradeAutoClickCostHUD.text = $"max";
         }        
+    }
+
+    private void UpgradeTime()
+    {
+        if(_points.CurrentPoints >= _upgradeTimeCost && _upgradeCountTime > _upgradeCountTimeCurrent)
+        {
+            _upgradeCountTimeCurrent += 1;
+
+            _timeAutoClick -= 1;
+            _timeAutoClickHUD.text = $"{_timeAutoClick} сек";
+
+            _points.RefreshPoints(-_upgradeTimeCost);
+
+            _upgradeTimeCost *= 2;
+
+            _upgradeTimeCostHUD.text = $"{_upgradeTimeCost}";
+
+            if(_upgradeCountTime <= _upgradeCountTimeCurrent)
+                _upgradeTimeCostHUD.text = $"max";
+        }
     }
 
     private IEnumerator GetPoints()

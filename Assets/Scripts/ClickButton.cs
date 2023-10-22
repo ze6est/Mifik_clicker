@@ -6,15 +6,13 @@ using UnityEngine.UI;
 public class ClickButton : MonoBehaviour
 {
     [SerializeField] private AwardsPerClick _awardsPerClick;
-
-    private Button _clickButton;
+    [SerializeField] private Button _clickButton;
 
     public event Action<long> ButtonClicked;
 
     private void OnValidate()
     {
-        _clickButton = gameObject.GetComponent<Button>();
-        _awardsPerClick = FindObjectOfType<AwardsPerClick>();
+        _clickButton = gameObject.GetComponent<Button>();        
     }
 
     private void Start() => 

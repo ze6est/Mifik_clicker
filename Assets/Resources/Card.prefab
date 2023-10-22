@@ -89,7 +89,7 @@ GameObject:
   - component: {fileID: 5635870472900476662}
   - component: {fileID: 6125832827710869027}
   m_Layer: 5
-  m_Name: UpgradeTime
+  m_Name: UpgradeTimeCost
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -499,7 +499,7 @@ GameObject:
   - component: {fileID: 8211442253369002800}
   - component: {fileID: 8211442253369002801}
   m_Layer: 5
-  m_Name: Upgrade
+  m_Name: UpgradeAutoClickCost
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -892,14 +892,14 @@ MonoBehaviour:
   _name: {fileID: 8211442254478816064}
   _pointsPerAutoClickHUD: {fileID: 8211442254621207221}
   _timeAutoClickHUD: {fileID: 3390354926688864003}
-  _upgradeCountHUD: {fileID: 8211442253369002801}
-  _upgradeTimeCountHUD: {fileID: 6125832827710869027}
+  _upgradeAutoClickCostHUD: {fileID: 8211442253369002801}
+  _upgradeTimeCostHUD: {fileID: 6125832827710869027}
   _icon: {fileID: 8211442253194965926}
   _timeAutoClickImage: {fileID: 8860608312522893246}
   _pointsPerAutoClick: 0
+  _upgradeAutoClickCost: 0
   _timeAutoClick: 0
-  _upgradeCount: 0
-  _upgradeTimeCount: 0
+  _upgradeTimeCost: 0
 --- !u!1 &8211442254268115750
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -23,10 +22,11 @@ public class Factory
         foreach (MifiksStaticData mifik in mifiks)
         {
             LockedButton lockedButton = block.GetComponentInChildren<LockedButton>();
-            lockedButton.Construct(_points, mifik.CostUnlocked);
+            lockedButton.Construct(_points, mifik.CostUnlocked, mifik.IsLocked);
 
             Card card = block.GetComponentInChildren<Card>();
-            card.Construct(mifik.NameId, mifik.PointsPerAutoClick, mifik.TimeSecondsAutoClick, mifik.UpgradeCount, mifik.UpgradeTimeCount, mifik.Icon, lockedButton, _points);            
+            card.Construct(mifik.NameId, mifik.PointsPerAutoClick, mifik.TimeSecondsAutoClick, mifik.UpgradeAutoClickCost, mifik.UpgradeCountAutoClick,
+                mifik.UpgradeTimeCost, mifik.UpgradeCountTime, mifik.Icon, lockedButton, _points);            
 
             Object.Instantiate(block, container.transform);
         }

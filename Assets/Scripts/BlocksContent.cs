@@ -2,9 +2,8 @@
 
 public class BlocksContent : MonoBehaviour
 {
-    [SerializeField] private Points _points;    
-
-    private Factory _factory;    
+    [SerializeField] private Points _points;
+    [SerializeField] private Factory _factory;    
 
     private void Awake()
     {
