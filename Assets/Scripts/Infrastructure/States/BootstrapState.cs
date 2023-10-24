@@ -11,7 +11,7 @@
 
         public void Enter()
         {
-            _gameStateMachine.Enter<LoadLevelState>();
+            _gameStateMachine.Enter<LoadProgressState>();
         }
 
         public void Exit()

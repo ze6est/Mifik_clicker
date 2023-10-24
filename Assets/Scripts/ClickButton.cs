@@ -10,6 +10,11 @@ public class ClickButton : MonoBehaviour
 
     public event Action<long> ButtonClicked;
 
+    public void Construct(AwardsPerClick awardsPerClick)
+    {
+        _awardsPerClick = awardsPerClick;
+    }
+
     private void OnValidate()
     {
         _clickButton = gameObject.GetComponent<Button>();        
@@ -21,6 +26,8 @@ public class ClickButton : MonoBehaviour
     private void OnDestroy() => 
         _clickButton.onClick.RemoveListener(ClickToButton);
 
-    private void ClickToButton() => 
-        ButtonClicked?.Invoke(_awardsPerClick.PointsPerClick);
+    private void ClickToButton()
+    {
+        ButtonClicked?.Invoke(_awardsPerClick.PointsPerClick);        
+    }
 }

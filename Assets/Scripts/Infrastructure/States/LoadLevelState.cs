@@ -2,23 +2,34 @@
 {
     public class LoadLevelState : IState
     {
-        private LoadFactory _loadFactory;
         private GameStateMachine _gameStateMachine;
+        private LoadFactory _loadFactory;
+        private ProgressService _progressService;
 
-        public LoadLevelState(GameStateMachine gameStateMachine)
+        public LoadLevelState(GameStateMachine gameStateMachine, LoadFactory loadFactory, ProgressService progressService)
         {
             _gameStateMachine = gameStateMachine;
-            _loadFactory = new LoadFactory();
+            _loadFactory = loadFactory;
+            _progressService = progressService;
         }
 
         public void Enter()
         {            
-            _loadFactory.LoadGame();            
+            _loadFactory.LoadGame();
+            InformProgressSaveds();
         }
 
         public void Exit()
         {
             
+        }
+
+        private void InformProgressSaveds()
+        {
+            foreach (ISavedProgress savedProgress in _loadFactory.ProgressSaveds)
+            {
+                savedProgress.LoadProgress(_progressService.Progress);
+            }
         }
     }
 }

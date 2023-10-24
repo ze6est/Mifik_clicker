@@ -6,9 +6,14 @@ namespace Assets.Scripts.Infrastructure
     {
         public GameStateMachine StateMachine;
 
-        public Game() 
+        private LoadFactory _loadFactory;
+        private ProgressService _progressService;
+
+        public Game(Canvas root) 
         {
-            StateMachine = new GameStateMachine();
+            _loadFactory = new LoadFactory(root);
+            _progressService = new ProgressService(_loadFactory);
+            StateMachine = new GameStateMachine(_loadFactory, _progressService);
         }
     }
 }

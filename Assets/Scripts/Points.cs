@@ -11,6 +11,11 @@ public class Points : MonoBehaviour, ISavedProgress
 
     public long CurrentPoints => _points;
 
+    public void Construct(ClickButton clickButton)
+    {
+        _clickButton = clickButton;
+    }
+
     private void OnValidate()
     {        
         _pointsHud = gameObject.GetComponent<TextMeshProUGUI>();
@@ -18,12 +23,14 @@ public class Points : MonoBehaviour, ISavedProgress
 
     private void Awake()
     {
-        _points = 1L;
-        _clickButton.ButtonClicked += RefreshPoints;        
+        _points = 1L;             
     }
 
-    private void Start() =>
+    private void Start()
+    {
+        _clickButton.ButtonClicked += RefreshPoints;
         RefreshText();
+    }
 
     private void OnDestroy()
     {
@@ -37,7 +44,10 @@ public class Points : MonoBehaviour, ISavedProgress
 
     public void LoadProgress(PlayerProgress progress)
     {
-        
+        if (progress == null)
+            Debug.Log("Progress null");
+
+        _points = progress.Points;
     }
 
     public void RefreshPoints(long count)

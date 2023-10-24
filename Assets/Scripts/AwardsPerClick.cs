@@ -5,8 +5,7 @@ using TMPro;
 public class AwardsPerClick : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _pointsPerClickHud;
-
-    private long _pointsPerClick;
+    [SerializeField] private long _pointsPerClick;
 
     public long PointsPerClick => _pointsPerClick;
 
@@ -14,7 +13,7 @@ public class AwardsPerClick : MonoBehaviour
         _pointsPerClickHud = gameObject.GetComponent<TextMeshProUGUI>();
 
     private void Awake() => 
-        _pointsPerClick = 1L;
+        _pointsPerClick = 2L;
 
     private void Start() => 
         RefreshText();

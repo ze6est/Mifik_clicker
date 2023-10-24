@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Assets.Scripts.Infrastructure.States;
-using UnityEngine;
 
 namespace Assets.Scripts.Infrastructure
 {
@@ -11,12 +10,13 @@ namespace Assets.Scripts.Infrastructure
 
         private IState _activeState;
 
-        public GameStateMachine()
+        public GameStateMachine(LoadFactory loadFactory, ProgressService progressService)
         {
             _states = new Dictionary<Type, IState>()
             {
                 [typeof(BootstrapState)] = new BootstrapState(this),
-                [typeof(LoadLevelState)] = new LoadLevelState(this)
+                [typeof(LoadLevelState)] = new LoadLevelState(this, loadFactory, progressService),
+                [typeof(LoadProgressState)] = new LoadProgressState(this, progressService)
             };
         }
 
@@ -28,8 +28,6 @@ namespace Assets.Scripts.Infrastructure
             _activeState = state;
 
             state.Enter();
-        }        
-
-        
+        }
     }
 }
