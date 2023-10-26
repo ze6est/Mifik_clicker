@@ -15,7 +15,7 @@
 
         public void Enter()
         {            
-            _loadFactory.LoadGame();
+            _loadFactory.LoadGame(_progressService);
             InformProgressSaveds();
         }
 

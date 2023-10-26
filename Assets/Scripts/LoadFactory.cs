@@ -16,7 +16,7 @@ namespace Assets.Scripts
             _root = root;
         }
 
-        public void LoadGame()
+        public void LoadGame(ProgressService progressService)
         {
             GameObject centerPanelContent = Resources.Load<GameObject>("HUD/CenterPanelContent");
             GameObject achievementsContent = Resources.Load<GameObject>("HUD/AchievementsContent");
@@ -35,6 +35,7 @@ namespace Assets.Scripts
 
             _points = centerPanelContentInstanse.GetComponentInChildren<Points>();
             AwardsPerClick awardsPerClick = centerPanelContentInstanse.GetComponentInChildren<AwardsPerClick>();
+            SaveButton saveButton = centerPanelContentInstanse.GetComponentInChildren<SaveButton>();
             ClickButton clickButton = clickButtonInstanse.GetComponent<ClickButton>();
             BlocksContent blocksContent = mifiksContentInstanse.GetComponentInChildren<BlocksContent>();
 
@@ -42,6 +43,7 @@ namespace Assets.Scripts
 
             _points.Construct(clickButton);
             clickButton.Construct(awardsPerClick);
+            saveButton.Construct(progressService);
 
             RegisterProgressSaveds(centerPanelContentInstanse);
             RegisterProgressSaveds(achievementsContentInstanse);
