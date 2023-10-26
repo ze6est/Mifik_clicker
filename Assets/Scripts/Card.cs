@@ -3,9 +3,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
+using Assets.Scripts.Infrastructure.States;
 
-public class Card : MonoBehaviour
-{
+public class Card : MonoBehaviour, ISavedProgress
+{    
+    [Header("Id")]
+    [SerializeField] MifiksName _nameId;
     [Header("Butons")]
     [SerializeField] private Button _upgradePointsPerClickButton;
     [SerializeField] private Button _upgradeTimeButton;
@@ -21,7 +24,6 @@ public class Card : MonoBehaviour
     [Header("Images")]
     [SerializeField] private Image _icon;
     [SerializeField] private Image _timeAutoClickImage;
-
     [Header("AutoClick")]
     [SerializeField] private long _pointsPerAutoClick;
     [SerializeField] private long _upgradeAutoClickCost;
@@ -30,6 +32,8 @@ public class Card : MonoBehaviour
     [SerializeField] private long _timeAutoClick;
     [SerializeField] private long _upgradeTimeCost;
     [SerializeField] private int _upgradeCountTime;
+    [Header("Locked")]
+    [SerializeField] private bool _isLocked;
 
     private Coroutine _getPoints;
     private int _upgradeCountAutoClickCurrent;
@@ -41,23 +45,24 @@ public class Card : MonoBehaviour
         _lockedButton = lockedButton;        
         _points = points;
 
-        _name.text = Enum.GetName(typeof(MifiksName), nameId);   
+        _nameId = nameId;
+        _name.text = Enum.GetName(typeof(MifiksName), nameId);        
         
-        _pointsPerAutoClickHUD.text = $"+{pointsPerAutoClick}";
-        _pointsPerAutoClick = pointsPerAutoClick;        
-
-        _timeAutoClickHUD.text = $"{timeAutoClick} сек";
+        _pointsPerAutoClick = pointsPerAutoClick;
+        
         _timeAutoClick = timeAutoClick;
-
-        _upgradeAutoClickCostHUD.text = $"{upgradeAutoClickCost}";
+        
         _upgradeAutoClickCost = upgradeAutoClickCost;
         _upgradeCountAutoClick = upgradeCountAutoClick;
-
-        _upgradeTimeCostHUD.text = $"{upgradeTimeCost}";
+        
         _upgradeTimeCost = upgradeTimeCost;
         _upgradeCountTime = upgradeCountTime;
 
-        _icon = icon;        
+        _icon = icon;
+
+        _isLocked = true;
+
+        RefreshText();
     }    
 
     private void Awake()
@@ -77,6 +82,54 @@ public class Card : MonoBehaviour
             StopCoroutine(_getPoints);
     }
 
+    public void UpdateProgress(PlayerProgress progress)
+    {
+        Debug.Log($"{(int)_nameId}");
+        Debug.Log($"{progress.Cards[(int)_nameId].PointsPerAutoClick}");
+
+        progress.Cards[(int)_nameId].PointsPerAutoClick = _pointsPerAutoClick;
+        progress.Cards[(int)_nameId].UpgradeAutoClickCost = _upgradeAutoClickCost;
+        progress.Cards[(int)_nameId].UpgradeCountAutoClickCurrent = _upgradeCountAutoClickCurrent;
+
+        progress.Cards[(int)_nameId].TimeSecondsAutoClick = _timeAutoClick;
+        progress.Cards[(int)_nameId].UpgradeTimeCost = _upgradeTimeCost;
+        progress.Cards[(int)_nameId].UpgradeCountTimeCurrent = _upgradeCountTimeCurrent;
+
+        progress.Cards[(int)_nameId].IsLocked = _isLocked;
+    }
+
+    public void LoadProgress(PlayerProgress progress)
+    {
+        if (!LoadProgressState.IsNewProgress)
+        {
+            _pointsPerAutoClick = progress.Cards[(int)_nameId].PointsPerAutoClick;
+            _upgradeAutoClickCost = progress.Cards[(int)_nameId].UpgradeAutoClickCost;
+            _upgradeCountAutoClickCurrent = progress.Cards[(int)_nameId].UpgradeCountAutoClickCurrent;
+
+            _timeAutoClick = progress.Cards[(int)_nameId].TimeSecondsAutoClick;
+            _upgradeTimeCost = progress.Cards[(int)_nameId].UpgradeTimeCost;
+            _upgradeCountTimeCurrent = progress.Cards[(int)_nameId].UpgradeCountTimeCurrent;
+
+            _isLocked = progress.Cards[(int)_nameId].IsLocked;
+
+            RefreshText();
+        }        
+    }
+
+    private void RefreshText()
+    {
+        _pointsPerAutoClickHUD.text = $"+{_pointsPerAutoClick}";
+        _timeAutoClickHUD.text = $"{_timeAutoClick} сек";
+        _upgradeAutoClickCostHUD.text = $"{_upgradeAutoClickCost}";
+        _upgradeTimeCostHUD.text = $"{_upgradeTimeCost}";
+
+        if (_upgradeCountAutoClick <= _upgradeCountAutoClickCurrent)
+            _upgradeAutoClickCostHUD.text = $"max";
+
+        if (_upgradeCountTime <= _upgradeCountTimeCurrent)
+            _upgradeTimeCostHUD.text = $"max";
+    }
+
     private void OnCardUnlocked()
     {
         _pointsPerAutoClickHUD.text = $"+{_pointsPerAutoClick}";
@@ -84,6 +137,8 @@ public class Card : MonoBehaviour
         _timeAutoClickImage.fillAmount = 0 ;
 
         _getPoints = StartCoroutine(GetPoints());
+
+        _isLocked = false;
     }
 
     private void UpgradeAutoClick()

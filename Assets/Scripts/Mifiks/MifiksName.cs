@@ -1,8 +1,8 @@
 ﻿public enum MifiksName
 {
-    Mifiks1 = 1,
-    Mifiks2 = 10,
-    Mifiks3 = 20,
-    Mifiks4 = 30,
-    Mifiks5 = 40
+    Mifiks1 = 0,
+    Mifiks2,
+    Mifiks3,
+    Mifiks4,
+    Mifiks5
 }

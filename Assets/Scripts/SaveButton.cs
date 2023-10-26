@@ -7,6 +7,7 @@ public class SaveButton : MonoBehaviour
     [SerializeField] private Button _saveButton;
 
     private ProgressService _progressService;
+    private Coroutine _saveCoroutine;
 
     private void OnValidate() => 
         _saveButton = gameObject.GetComponent<Button>();
@@ -19,9 +20,21 @@ public class SaveButton : MonoBehaviour
     private void Start() => 
         _saveButton.onClick.AddListener(SaveProgress);
 
-    private void OnDestroy() => 
+    private void OnDestroy()
+    {
         _saveButton.onClick.RemoveListener(SaveProgress);
+        _progressService.ProgressSaved -= StopSaveProgress;
+    }
 
-    private void SaveProgress() => 
-        _progressService.SaveProgress();
+    private void SaveProgress()
+    {
+        _saveCoroutine = StartCoroutine(_progressService.SaveProgress());
+
+        _progressService.ProgressSaved += StopSaveProgress;
+    }
+
+    private void StopSaveProgress()
+    {
+        StopCoroutine(_saveCoroutine);
+    }    
 }

@@ -1,9 +1,9 @@
-﻿using System;
-
-namespace Assets.Scripts.Infrastructure.States
+﻿namespace Assets.Scripts.Infrastructure.States
 {
     public class LoadProgressState : IState
     {
+        public static bool IsNewProgress { get; private set; }
+
         private GameStateMachine _gameStateMachine;
         private ProgressService _progressService;
 
@@ -29,7 +29,10 @@ namespace Assets.Scripts.Infrastructure.States
             _progressService.Progress = _progressService.LoadProgress() ?? GetNewProgress();
         }
 
-        private PlayerProgress GetNewProgress() =>
-            new PlayerProgress();
+        private PlayerProgress GetNewProgress()
+        {
+            IsNewProgress = true;
+            return new PlayerProgress();
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Assets.Scripts.Infrastructure.States;
 using UnityEngine;
 
 namespace Assets.Scripts
@@ -39,7 +40,7 @@ namespace Assets.Scripts
             ClickButton clickButton = clickButtonInstanse.GetComponent<ClickButton>();
             BlocksContent blocksContent = mifiksContentInstanse.GetComponentInChildren<BlocksContent>();
 
-            InstantiateBloks(blocksContent.gameObject);
+            InstantiateBloks(blocksContent.gameObject, progressService.Progress);
 
             _points.Construct(clickButton);
             clickButton.Construct(awardsPerClick);
@@ -51,7 +52,7 @@ namespace Assets.Scripts
             RegisterProgressSaveds(clickButtonInstanse);
         }
 
-        private void InstantiateBloks(GameObject container)
+        private void InstantiateBloks(GameObject container, PlayerProgress progress)
         {
             Block block = Resources.Load<Block>("Block");
 
@@ -61,7 +62,19 @@ namespace Assets.Scripts
             foreach (MifiksStaticData mifik in mifiks)
             {
                 LockedButton lockedButton = block.GetComponentInChildren<LockedButton>();
-                lockedButton.Construct(_points, mifik.CostUnlocked, mifik.IsLocked);
+
+                if (LoadProgressState.IsNewProgress)
+                {
+                    lockedButton.Construct(_points,
+                        mifik.CostUnlocked,
+                        mifik.IsLocked);
+                }
+                else
+                {
+                    lockedButton.Construct(_points,
+                        mifik.CostUnlocked,
+                        progress.Cards[(int)mifik.NameId].IsLocked);
+                }
 
                 Card card = block.GetComponentInChildren<Card>();
                 card.Construct(mifik.NameId,
@@ -73,7 +86,7 @@ namespace Assets.Scripts
                     mifik.UpgradeCountTime,
                     mifik.Icon,
                     lockedButton,
-                    _points);
+                    _points);                
 
                 Object.Instantiate(block, container.transform);
             }

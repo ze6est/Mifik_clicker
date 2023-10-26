@@ -1,23 +1,32 @@
-﻿using Assets.Scripts;
+﻿using System;
+using System.Collections;
+using Assets.Scripts;
 using UnityEngine;
 
 public class ProgressService
 {
+    private const string ProgressKey = "Progress11";
+
+    private LoadFactory _loadFactory;
+
     public PlayerProgress Progress { get; set; }
 
-    private const string ProgressKey = "Progress";
-    private LoadFactory _loadFactory;
+    public event Action ProgressSaved;
 
     public ProgressService(LoadFactory loadFactory) =>
         _loadFactory = loadFactory;
 
-
-    public void SaveProgress()
+    public IEnumerator SaveProgress()
     {
-        foreach (ISavedProgress savedProgress in _loadFactory.ProgressSaveds)        
-            savedProgress.UpdateProgress(Progress);        
+        foreach (ISavedProgress savedProgress in _loadFactory.ProgressSaveds)
+        {
+            savedProgress.UpdateProgress(Progress);
+            yield return null;
+        }
 
         PlayerPrefs.SetString(ProgressKey, Progress.ToJson());
+
+        ProgressSaved?.Invoke();
     }
 
     public PlayerProgress LoadProgress() => 

@@ -44,9 +44,6 @@ public class Points : MonoBehaviour, ISavedProgress
 
     public void LoadProgress(PlayerProgress progress)
     {
-        if (progress == null)
-            Debug.Log("Progress null");
-
         _points = progress.Points;
     }
 

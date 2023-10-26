@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce07ff31fabe5124fb0cf06dc3e1c91c, type: 3}
   m_Name: Mifik5
   m_EditorClassIdentifier: 
-  NameId: 40
+  NameId: 4
   CostUnlocked: 1000
   PointsPerAutoClick: 7
   UpgradeAutoClickCost: 4
