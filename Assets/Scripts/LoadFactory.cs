@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using Assets.Scripts.Achievements;
+using Assets.Scripts.Achievements.AchievementsTypes;
 using Assets.Scripts.Infrastructure.States;
 using UnityEngine;
 
@@ -39,8 +41,10 @@ namespace Assets.Scripts
             SaveButton saveButton = centerPanelContentInstanse.GetComponentInChildren<SaveButton>();
             ClickButton clickButton = clickButtonInstanse.GetComponent<ClickButton>();
             BlocksContent blocksContent = mifiksContentInstanse.GetComponentInChildren<BlocksContent>();
+            BlocksAchievementsContent blocksAchievementsContent = achievementsContentInstanse.GetComponentInChildren<BlocksAchievementsContent>();
 
             InstantiateBloks(blocksContent.gameObject, progressService.Progress);
+            InstantiateBlocksAchievement(blocksAchievementsContent.gameObject, progressService.Progress, clickButton);
 
             _points.Construct(clickButton);
             clickButton.Construct(awardsPerClick);
@@ -62,22 +66,15 @@ namespace Assets.Scripts
             foreach (MifiksStaticData mifik in mifiks)
             {
                 LockedButton lockedButton = block.GetComponentInChildren<LockedButton>();
+                Card card = block.GetComponentInChildren<Card>();
 
                 if (LoadProgressState.IsNewProgress)
                 {
                     lockedButton.Construct(_points,
                         mifik.CostUnlocked,
                         mifik.IsLocked);
-                }
-                else
-                {
-                    lockedButton.Construct(_points,
-                        mifik.CostUnlocked,
-                        progress.Cards[(int)mifik.NameId].IsLocked);
-                }
 
-                Card card = block.GetComponentInChildren<Card>();
-                card.Construct(mifik.NameId,
+                    card.Construct(mifik.NameId,
                     mifik.PointsPerAutoClick,
                     mifik.TimeSecondsAutoClick,
                     mifik.UpgradeAutoClickCost,
@@ -86,10 +83,45 @@ namespace Assets.Scripts
                     mifik.UpgradeCountTime,
                     mifik.Icon,
                     lockedButton,
-                    _points);                
+                    _points);
+                }
+                else
+                {
+                    lockedButton.Construct(_points,
+                        mifik.CostUnlocked,
+                        progress.Cards[(int)mifik.NameId].IsLocked);
+
+                    card.Construct(mifik.NameId,
+                        mifik.Icon);
+                }            
 
                 Object.Instantiate(block, container.transform);
             }
+        }
+
+        private void InstantiateBlocksAchievement(GameObject container, PlayerProgress progress, ClickButton clickButton)
+        {
+            BlockAchievement blockAchievement = Resources.Load<BlockAchievement>("Achievements/Prefabs/BlockAchievement");
+            GameObject achievementGO;
+
+            _staticDataService.LoadAchievements();
+            List<AchievementsStaticData> achievements = _staticDataService.GetAchievements();
+
+            foreach (AchievementsStaticData achievement in achievements)
+            {
+                switch (achievement.AchievementsType)
+                {
+                    case AchievementsType.ClickCount:
+                        achievementGO = ConstructClickCount(clickButton, blockAchievement, achievement);
+                        break;
+                    default:
+                        achievementGO = null;
+                        break;
+                }
+
+                BlockAchievement blockAchievementGO = Object.Instantiate(blockAchievement, container.transform);
+                Object.Instantiate(achievementGO, blockAchievementGO.transform);
+            }           
         }
 
         private void RegisterProgressSaveds(GameObject gameObject)
@@ -103,5 +135,37 @@ namespace Assets.Scripts
 
         private void Cleanup() => 
             ProgressSaveds.Clear();
+
+        private GameObject ConstructClickCount(ClickButton clickButton, BlockAchievement blockAchievement, AchievementsStaticData achievement)
+        {
+            ClickCountAchievement clickCountAchievement = Resources.Load<ClickCountAchievement>("Achievements/Prefabs/ClickCountAchievement");
+
+            if (clickCountAchievement == null)
+                Debug.Log("null");
+
+            if (LoadProgressState.IsNewProgress)
+            {
+                clickCountAchievement.Construct(_points,
+                    achievement.AchievementsType,
+                    achievement.Icon,
+                    achievement.TaskName,
+                    achievement.TaskAwardPoints,
+                    achievement.TaskCount,
+                    achievement.TaskValues,
+                    achievement.IsLocked,
+                    0);
+
+                clickCountAchievement.Construct(clickButton, 0);
+            }
+            if (!LoadProgressState.IsNewProgress)
+            {
+                clickCountAchievement.Construct(_points, 
+                    achievement.AchievementsType,
+                    achievement.Icon);
+                clickCountAchievement.Construct(clickButton);
+            }
+
+            return clickCountAchievement.gameObject;
+        }        
     }
 }

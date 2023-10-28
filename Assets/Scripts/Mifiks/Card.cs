@@ -63,7 +63,15 @@ public class Card : MonoBehaviour, ISavedProgress
         _isLocked = true;
 
         RefreshText();
-    }    
+    }
+
+    public void Construct(MifiksName nameId, Image icon)
+    {
+        _nameId = nameId;
+        _name.text = Enum.GetName(typeof(MifiksName), nameId);
+
+        _icon = icon;
+    }
 
     private void Awake()
     {
@@ -84,9 +92,6 @@ public class Card : MonoBehaviour, ISavedProgress
 
     public void UpdateProgress(PlayerProgress progress)
     {
-        Debug.Log($"{(int)_nameId}");
-        Debug.Log($"{progress.Cards[(int)_nameId].PointsPerAutoClick}");
-
         progress.Cards[(int)_nameId].PointsPerAutoClick = _pointsPerAutoClick;
         progress.Cards[(int)_nameId].UpgradeAutoClickCost = _upgradeAutoClickCost;
         progress.Cards[(int)_nameId].UpgradeCountAutoClickCurrent = _upgradeCountAutoClickCurrent;
