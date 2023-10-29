@@ -65,10 +65,13 @@ public class Card : MonoBehaviour, ISavedProgress
         RefreshText();
     }
 
-    public void Construct(MifiksName nameId, Image icon)
+    public void Construct(MifiksName nameId, Image icon, Points points, int upgradeCountAutoClick, int upgradeCountTime)
     {
         _nameId = nameId;
         _name.text = Enum.GetName(typeof(MifiksName), nameId);
+        _points = points;
+        _upgradeCountAutoClick = upgradeCountAutoClick;
+        _upgradeCountTime = upgradeCountTime;
 
         _icon = icon;
     }

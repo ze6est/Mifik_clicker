@@ -11,5 +11,5 @@ public class CardProgress
     public long UpgradeTimeCost;
     public int UpgradeCountTimeCurrent;
 
-    public bool IsLocked = true;    
+    public bool IsLocked = true;
 }

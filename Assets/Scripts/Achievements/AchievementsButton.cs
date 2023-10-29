@@ -10,7 +10,8 @@ namespace Assets.Scripts.Achievements
         [SerializeField] protected Button Button;
         [SerializeField] protected AchievementsType Type;
         [SerializeField] protected Image Icon;
-        [SerializeField] protected TextMeshProUGUI TaskName;
+        [SerializeField] protected string TaskName;
+        [SerializeField] protected TextMeshProUGUI TaskNameHUD;
         [SerializeField] protected int TaskCount;
         [SerializeField] protected int[] TaskValues;
         [SerializeField] protected long[] TaskAwardPoints;
@@ -22,7 +23,8 @@ namespace Assets.Scripts.Achievements
             Points = points;
             Type = type;
             Icon = icon;
-            TaskName.text = taskName;
+            TaskName = taskName;
+            TaskNameHUD.text = taskName;
             TaskCount = taskCount;
             TaskValues = taskValues;
             TaskAwardPoints = taskAwardPoints;
@@ -31,10 +33,15 @@ namespace Assets.Scripts.Achievements
             AchievementNumber = achievementNumber;
         }
 
-        public void Construct(Points points, AchievementsType type, Image icon)
+        public void Construct(Points points, AchievementsType type, string taskName, int taskCount, int[] taskValues, long[] taskAwardPoints, Image icon)
         {
             Points = points;
             Type = type;
+            TaskName = taskName;
+            TaskNameHUD.text = taskName;
+            TaskCount = taskCount;
+            TaskValues = taskValues;
+            TaskAwardPoints = taskAwardPoints;
             Icon = icon;
         }
 
@@ -42,44 +49,25 @@ namespace Assets.Scripts.Achievements
         {
             Button = gameObject.GetComponent<Button>();
             Icon = gameObject.GetComponentInChildren<Image>();
-            TaskName = gameObject.GetComponentInChildren<TextMeshProUGUI>();
+            TaskNameHUD = gameObject.GetComponentInChildren<TextMeshProUGUI>();
         }
 
-        protected virtual void Awake()
+        protected virtual void Start()
         {
-            Debug.Log("Awake");
-
-            Button.onClick.AddListener(GetAwardPoints);
-
             if (IsLocked)
             {
-                Debug.Log("Locked");
+                if(AchievementNumber < TaskValues.Length)
+                    TaskNameHUD.text = $"{TaskName} {TaskValues[AchievementNumber - 1]}";
+                else
+                    TaskNameHUD.text = "Все задания выполнены";
 
                 Button.interactable = false;
-                TaskName.text = $"{TaskName.text} {TaskValues[AchievementNumber]}";
             }
             else
-            {
-                Debug.Log("UnLocked");
-
-                Button.interactable = true;
-                TaskName.text = $"{TaskAwardPoints[AchievementNumber]}";
-            }
-        }
-
-        protected void GetAwardPoints()
-        {
-            Points.RefreshPoints(TaskAwardPoints[AchievementNumber]);
-
-            AchievementNumber += 1;
-
-            Button.interactable = false;
-
-            if (AchievementNumber >= TaskAwardPoints.Length)
             {                
-                Button.onClick.RemoveListener(GetAwardPoints);
-                TaskName.text = "Все задания выполнены.";
+                Button.interactable = true;
+                TaskNameHUD.text = $"Заберите {TaskAwardPoints[AchievementNumber - 1]} поинтов";
             }
-        }
+        }        
     }
 }

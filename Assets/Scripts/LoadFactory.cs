@@ -92,7 +92,10 @@ namespace Assets.Scripts
                         progress.Cards[(int)mifik.NameId].IsLocked);
 
                     card.Construct(mifik.NameId,
-                        mifik.Icon);
+                        mifik.Icon,
+                        _points,
+                        mifik.UpgradeCountAutoClick,
+                        mifik.UpgradeCountTime);
                 }            
 
                 Object.Instantiate(block, container.transform);
@@ -138,10 +141,7 @@ namespace Assets.Scripts
 
         private GameObject ConstructClickCount(ClickButton clickButton, BlockAchievement blockAchievement, AchievementsStaticData achievement)
         {
-            ClickCountAchievement clickCountAchievement = Resources.Load<ClickCountAchievement>("Achievements/Prefabs/ClickCountAchievement");
-
-            if (clickCountAchievement == null)
-                Debug.Log("null");
+            ClickCountAchievement clickCountAchievement = Resources.Load<ClickCountAchievement>("Achievements/Prefabs/ClickCountAchievement");            
 
             if (LoadProgressState.IsNewProgress)
             {
@@ -153,7 +153,7 @@ namespace Assets.Scripts
                     achievement.TaskCount,
                     achievement.TaskValues,
                     achievement.IsLocked,
-                    0);
+                    1);
 
                 clickCountAchievement.Construct(clickButton, 0);
             }
@@ -161,6 +161,10 @@ namespace Assets.Scripts
             {
                 clickCountAchievement.Construct(_points, 
                     achievement.AchievementsType,
+                    achievement.TaskName,
+                    achievement.TaskCount,
+                    achievement.TaskValues,
+                    achievement.TaskAwardPoints,
                     achievement.Icon);
                 clickCountAchievement.Construct(clickButton);
             }
