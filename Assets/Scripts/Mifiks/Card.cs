@@ -39,6 +39,8 @@ public class Card : MonoBehaviour, ISavedProgress
     private int _upgradeCountAutoClickCurrent;
     private int _upgradeCountTimeCurrent;
 
+    public event Action<long> PointsReceived;
+
     public void Construct(MifiksName nameId, long pointsPerAutoClick, long timeAutoClick, long upgradeAutoClickCost, int upgradeCountAutoClick,
         long upgradeTimeCost, int upgradeCountTime, Image icon, LockedButton lockedButton, Points points)
     {
@@ -206,6 +208,7 @@ public class Card : MonoBehaviour, ISavedProgress
             if (currentTime >= _timeAutoClick)
             {
                 _points.RefreshPoints(_pointsPerAutoClick);
+                PointsReceived?.Invoke(_pointsPerAutoClick);
                 currentTime = 0;
             }
         }

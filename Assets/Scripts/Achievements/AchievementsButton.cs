@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Assets.Scripts.Infrastructure.States;
 
 namespace Assets.Scripts.Achievements
 {
-    public abstract class AchievementsButton : MonoBehaviour
+    public abstract class AchievementsButton<T> : MonoBehaviour, ISavedProgress
     {
         [SerializeField] protected Points Points;
         [SerializeField] protected Button Button;
@@ -16,7 +17,9 @@ namespace Assets.Scripts.Achievements
         [SerializeField] protected int[] TaskValues;
         [SerializeField] protected long[] TaskAwardPoints;
         [SerializeField] protected bool IsLocked;
-        [SerializeField] protected int AchievementNumber;
+        [SerializeField] protected int AchievementNumber;        
+
+        protected abstract T Parametr { get; set; }
 
         public void Construct(Points points, AchievementsType type, Image icon, string taskName, long[] taskAwardPoints, int taskCount, int[] taskValues, bool isLocked, int achievementNumber)
         {
@@ -44,7 +47,6 @@ namespace Assets.Scripts.Achievements
             TaskAwardPoints = taskAwardPoints;
             Icon = icon;
         }
-
         protected void OnValidate()
         {
             Button = gameObject.GetComponent<Button>();
@@ -54,9 +56,11 @@ namespace Assets.Scripts.Achievements
 
         protected virtual void Start()
         {
+            Button.onClick.AddListener(GetAwardPoints);
+
             if (IsLocked)
             {
-                if(AchievementNumber < TaskValues.Length)
+                if(AchievementNumber <= TaskValues.Length)
                     TaskNameHUD.text = $"{TaskName} {TaskValues[AchievementNumber - 1]}";
                 else
                     TaskNameHUD.text = "Все задания выполнены";
@@ -68,6 +72,26 @@ namespace Assets.Scripts.Achievements
                 Button.interactable = true;
                 TaskNameHUD.text = $"Заберите {TaskAwardPoints[AchievementNumber - 1]} поинтов";
             }
-        }        
+
+            if (AchievementNumber > TaskValues.Length)
+                Button.onClick.RemoveListener(GetAwardPoints);
+        }
+
+        protected abstract void GetAwardPoints();
+
+        public virtual void LoadProgress(PlayerProgress progress)
+        {
+            if (!LoadProgressState.IsNewProgress)
+            {
+                IsLocked = progress.Achievements[(int)Type].IsLocked;
+                AchievementNumber = progress.Achievements[(int)Type].AchievementNumber;                
+            }
+        }
+
+        public virtual void UpdateProgress(PlayerProgress progress)
+        {
+            progress.Achievements[(int)Type].IsLocked = IsLocked;
+            progress.Achievements[(int)Type].AchievementNumber = AchievementNumber;            
+        }
     }
 }

@@ -19,14 +19,12 @@ public class PlayerProgress
         for (int i = 0; i < Cards.Length; i++)
         {
             CardProgress = new CardProgress();
-
             Cards[i] = CardProgress;
         }
 
         for (int i = 0; i < Achievements.Length; i++)
         {
             AchievementProgress = new AchievementProgress();
-
             Achievements[i] = AchievementProgress;
         }
     }

@@ -3,15 +3,16 @@ using UnityEngine;
 
 namespace Assets.Scripts.Achievements.AchievementsTypes
 {
-    public class ClickCountAchievement : AchievementsButton, ISavedProgress
+    public class ClickCountAchievement : AchievementsButton<int>, ISavedProgress
     {
+        protected override int Parametr { get; set; }
+
         [SerializeField] private ClickButton _clickButton;
-        [SerializeField] private int _clickCount;
 
         public void Construct(ClickButton clickButton, int clickCount)
         {
             _clickButton = clickButton;
-            _clickCount = clickCount;
+            Parametr = clickCount;
         }
 
         public void Construct(ClickButton clickButton)
@@ -21,43 +22,37 @@ namespace Assets.Scripts.Achievements.AchievementsTypes
 
         protected override void Start()
         {
-            Button.onClick.AddListener(GetAwardPoints);
-
-            base.Start();
-
-            if (AchievementNumber > TaskValues.Length)
-                Button.onClick.RemoveListener(GetAwardPoints);
+            base.Start();            
 
             _clickButton.ButtonClicked += AddClick;
-            CheckPoints();
-            
+            CheckPoints();            
         }
 
-        public void UpdateProgress(PlayerProgress progress)
+        public override void UpdateProgress(PlayerProgress progress)
         {
-            progress.Achievements[(int)Type].IsLocked = IsLocked;
-            progress.Achievements[(int)Type].AchievementNumber = AchievementNumber;
-            progress.Achievements[(int)Type].ClickCountAchievementProgress.ClickCount = _clickCount;
+            base.UpdateProgress(progress);
+
+            progress.Achievements[(int)Type].ClickCountAchievementProgress.ClickCount = Parametr;
         }
 
-        public void LoadProgress(PlayerProgress progress)
+        public override void LoadProgress(PlayerProgress progress)
         {
+            base.LoadProgress(progress);
+
             if (!LoadProgressState.IsNewProgress)
-            {
-                IsLocked = progress.Achievements[(int)Type].IsLocked;
-                AchievementNumber = progress.Achievements[(int)Type].AchievementNumber;
-                _clickCount = progress.Achievements[(int)Type].ClickCountAchievementProgress.ClickCount;
+            {                
+                Parametr = progress.Achievements[(int)Type].ClickCountAchievementProgress.ClickCount;
             }
         }
 
         private void AddClick(long points)
         {
-            _clickCount++;
+            Parametr++;
 
             CheckPoints();
         }
 
-        private void GetAwardPoints()
+        protected override void GetAwardPoints()
         {
             Points.RefreshPoints(TaskAwardPoints[AchievementNumber - 1]);
 
@@ -72,7 +67,7 @@ namespace Assets.Scripts.Achievements.AchievementsTypes
             }
             else
             {
-                if (_clickCount >= TaskValues[AchievementNumber - 1])
+                if (Parametr >= TaskValues[AchievementNumber - 1])
                 {
                     IsLocked = false;
                     Button.interactable = true;
@@ -91,7 +86,7 @@ namespace Assets.Scripts.Achievements.AchievementsTypes
         {
             if (AchievementNumber > TaskValues.Length)
                 _clickButton.ButtonClicked -= AddClick;
-            else if (_clickCount >= TaskValues[AchievementNumber - 1])
+            else if (Parametr >= TaskValues[AchievementNumber - 1])
             {
                 IsLocked = false;
                 Button.interactable = true;

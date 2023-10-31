@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using System;
 
 [RequireComponent(typeof(TextMeshProUGUI))]
 public class Points : MonoBehaviour, ISavedProgress
@@ -10,6 +11,8 @@ public class Points : MonoBehaviour, ISavedProgress
     private long _points;
 
     public long CurrentPoints => _points;
+
+    public event Action<long> PointReceived;
 
     public void Construct(ClickButton clickButton)
     {
@@ -50,6 +53,7 @@ public class Points : MonoBehaviour, ISavedProgress
     public void RefreshPoints(long count)
     {
         _points += count;
+        PointReceived?.Invoke(count);
         RefreshText();
     }
 

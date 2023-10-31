@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class ProgressService
 {
-    private const string ProgressKey = "Progress16";
+    private const string ProgressKey = "Progress24";
 
     private LoadFactory _loadFactory;
 

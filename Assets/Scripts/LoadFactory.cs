@@ -11,12 +11,14 @@ namespace Assets.Scripts
         private StaticDataService _staticDataService = new StaticDataService();
         private Canvas _root;
         private Points _points;
+        private List<Card> _cards;
 
         public List<ISavedProgress> ProgressSaveds { get; } = new List<ISavedProgress>();
 
         public LoadFactory(Canvas root)
         {
             _root = root;
+            _cards = new List<Card>();
         }
 
         public void LoadGame(ProgressService progressService)
@@ -96,9 +98,10 @@ namespace Assets.Scripts
                         _points,
                         mifik.UpgradeCountAutoClick,
                         mifik.UpgradeCountTime);
-                }            
+                }
 
-                Object.Instantiate(block, container.transform);
+                Block blockInstanse = Object.Instantiate(block, container.transform);
+                _cards.Add(blockInstanse.GetComponentInChildren<Card>());
             }
         }
 
@@ -116,6 +119,15 @@ namespace Assets.Scripts
                 {
                     case AchievementsType.ClickCount:
                         achievementGO = ConstructClickCount(clickButton, blockAchievement, achievement);
+                        break;
+                    case AchievementsType.MifCoinClick:
+                        achievementGO = ConstructMifCoinClick(clickButton, blockAchievement, achievement);
+                        break;
+                    case AchievementsType.MifCoinAutoClick:
+                        achievementGO = ConstructMifCoinAutoClick(_cards, blockAchievement, achievement);
+                        break;
+                    case AchievementsType.MifCoin:
+                        achievementGO = ConstructMifCoin(blockAchievement, achievement);
                         break;
                     default:
                         achievementGO = null;
@@ -170,6 +182,106 @@ namespace Assets.Scripts
             }
 
             return clickCountAchievement.gameObject;
-        }        
+        }
+
+        private GameObject ConstructMifCoin(BlockAchievement blockAchievement, AchievementsStaticData achievement)
+        {
+            MifCoinAchievement mifCoinAchievement = Resources.Load<MifCoinAchievement>("Achievements/Prefabs/MifCoinAchievement");
+
+            if (LoadProgressState.IsNewProgress)
+            {
+                mifCoinAchievement.Construct(_points,
+                    achievement.AchievementsType,
+                    achievement.Icon,
+                    achievement.TaskName,
+                    achievement.TaskAwardPoints,
+                    achievement.TaskCount,
+                    achievement.TaskValues,
+                    achievement.IsLocked,
+                    1);
+
+                mifCoinAchievement.Construct(0);
+            }
+            if (!LoadProgressState.IsNewProgress)
+            {
+                mifCoinAchievement.Construct(_points,
+                    achievement.AchievementsType,
+                    achievement.TaskName,
+                    achievement.TaskCount,
+                    achievement.TaskValues,
+                    achievement.TaskAwardPoints,
+                    achievement.Icon);                
+            }
+
+            return mifCoinAchievement.gameObject;
+        }
+
+        private GameObject ConstructMifCoinAutoClick(List<Card> cards, BlockAchievement blockAchievement, AchievementsStaticData achievement)
+        {
+            MifCoinAutoClickAchievement mifCoinAutoClickAchievement =
+                Resources.Load<MifCoinAutoClickAchievement>("Achievements/Prefabs/MifCoinAutoClickAchievement");
+
+            if (LoadProgressState.IsNewProgress)
+            {
+                mifCoinAutoClickAchievement.Construct(_points,
+                    achievement.AchievementsType,
+                    achievement.Icon,
+                    achievement.TaskName,
+                    achievement.TaskAwardPoints,
+                    achievement.TaskCount,
+                    achievement.TaskValues,
+                    achievement.IsLocked,
+                    1);
+
+                mifCoinAutoClickAchievement.Construct(cards, 0);
+            }
+            if (!LoadProgressState.IsNewProgress)
+            {
+                mifCoinAutoClickAchievement.Construct(_points,
+                    achievement.AchievementsType,
+                    achievement.TaskName,
+                    achievement.TaskCount,
+                    achievement.TaskValues,
+                    achievement.TaskAwardPoints,
+                    achievement.Icon);
+                mifCoinAutoClickAchievement.Construct(cards);
+            }
+
+            return mifCoinAutoClickAchievement.gameObject;
+        }
+
+        private GameObject ConstructMifCoinClick(ClickButton clickButton, BlockAchievement blockAchievement, AchievementsStaticData achievement)
+        {
+            MifCoinClickAchievement mifCoinClickAchievement =
+                Resources.Load<MifCoinClickAchievement>("Achievements/Prefabs/MifCoinClickAchievement");
+
+            if (LoadProgressState.IsNewProgress)
+            {
+                mifCoinClickAchievement.Construct(_points,
+                    achievement.AchievementsType,
+                    achievement.Icon,
+                    achievement.TaskName,
+                    achievement.TaskAwardPoints,
+                    achievement.TaskCount,
+                    achievement.TaskValues,
+                    achievement.IsLocked,
+                    1);
+
+                mifCoinClickAchievement.Construct(clickButton, 0);
+            }
+            if (!LoadProgressState.IsNewProgress)
+            {
+                mifCoinClickAchievement.Construct(_points,
+                    achievement.AchievementsType,
+                    achievement.TaskName,
+                    achievement.TaskCount,
+                    achievement.TaskValues,
+                    achievement.TaskAwardPoints,
+                    achievement.Icon);
+                mifCoinClickAchievement.Construct(clickButton);
+            }
+
+            return mifCoinClickAchievement.gameObject;
+        }
     }
 }
