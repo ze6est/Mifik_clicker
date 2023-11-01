@@ -10,12 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b48f72887c132744db902d30486f0bf9, type: 3}
-  m_Name: MifCoinAchievement
+  m_Name: MifCoinPerClickAchievement
   m_EditorClassIdentifier: 
-  AchievementsType: 3
-  TaskName: "\u0417\u0430\u0440\u0430\u0431\u043E\u0442\u0430\u0439\u0442\u0435 \u043C\u0438\u0444\u043A\u043E\u0438\u043D\u043E\u0432"
-  TaskCount: 5
-  TaskValues: 0a000000f4010000d007000088130000204e0000
-  TaskAwardPoints: 1400000000000000dc05000000000000881300000000000050c300000000000020a1070000000000
+  AchievementsType: 4
+  TaskName: "\u0414\u043E\u0441\u0442\u0438\u0433\u043D\u0438\u0442\u0435 \u043C\u0438\u0444\u043A\u043E\u0438\u043D\u043E\u0432
+    \u0437\u0430 \u043A\u043B\u0438\u043A"
+  TaskCount: 3
+  TaskValues: 050000001400000064000000
+  TaskAwardPoints: 6400000000000000f401000000000000dc05000000000000
   Icon: {fileID: 0}
   IsLocked: 1

@@ -41,16 +41,18 @@ namespace Assets.Scripts
             _points = centerPanelContentInstanse.GetComponentInChildren<Points>();
             AwardsPerClick awardsPerClick = centerPanelContentInstanse.GetComponentInChildren<AwardsPerClick>();
             SaveButton saveButton = centerPanelContentInstanse.GetComponentInChildren<SaveButton>();
+            ResetButton resetButton = centerPanelContentInstanse.GetComponentInChildren<ResetButton>();
             ClickButton clickButton = clickButtonInstanse.GetComponent<ClickButton>();
             BlocksContent blocksContent = mifiksContentInstanse.GetComponentInChildren<BlocksContent>();
             BlocksAchievementsContent blocksAchievementsContent = achievementsContentInstanse.GetComponentInChildren<BlocksAchievementsContent>();
 
             InstantiateBloks(blocksContent.gameObject, progressService.Progress);
-            InstantiateBlocksAchievement(blocksAchievementsContent.gameObject, progressService.Progress, clickButton);
+            InstantiateBlocksAchievement(blocksAchievementsContent.gameObject, progressService.Progress, clickButton, awardsPerClick);
 
             _points.Construct(clickButton);
             clickButton.Construct(awardsPerClick);
             saveButton.Construct(progressService);
+            resetButton.Construct(progressService);
 
             RegisterProgressSaveds(centerPanelContentInstanse);
             RegisterProgressSaveds(achievementsContentInstanse);
@@ -105,7 +107,7 @@ namespace Assets.Scripts
             }
         }
 
-        private void InstantiateBlocksAchievement(GameObject container, PlayerProgress progress, ClickButton clickButton)
+        private void InstantiateBlocksAchievement(GameObject container, PlayerProgress progress, ClickButton clickButton, AwardsPerClick awardsPerClick)
         {
             BlockAchievement blockAchievement = Resources.Load<BlockAchievement>("Achievements/Prefabs/BlockAchievement");
             GameObject achievementGO;
@@ -129,6 +131,12 @@ namespace Assets.Scripts
                     case AchievementsType.MifCoin:
                         achievementGO = ConstructMifCoin(blockAchievement, achievement);
                         break;
+                    case AchievementsType.MifCoinPerClick:
+                        achievementGO = ConstructMifCoinPerClick(awardsPerClick, blockAchievement, achievement);
+                        break;
+                    case AchievementsType.OpenMifiks:
+                        achievementGO = ConstructOpenMifiks(_cards, blockAchievement, achievement);
+                        break;
                     default:
                         achievementGO = null;
                         break;
@@ -146,10 +154,7 @@ namespace Assets.Scripts
         }
 
         private void Register(ISavedProgress savedProgress) => 
-            ProgressSaveds.Add(savedProgress);
-
-        private void Cleanup() => 
-            ProgressSaveds.Clear();
+            ProgressSaveds.Add(savedProgress);        
 
         private GameObject ConstructClickCount(ClickButton clickButton, BlockAchievement blockAchievement, AchievementsStaticData achievement)
         {
@@ -157,60 +162,30 @@ namespace Assets.Scripts
 
             if (LoadProgressState.IsNewProgress)
             {
-                clickCountAchievement.Construct(_points,
-                    achievement.AchievementsType,
-                    achievement.Icon,
-                    achievement.TaskName,
-                    achievement.TaskAwardPoints,
-                    achievement.TaskCount,
-                    achievement.TaskValues,
-                    achievement.IsLocked,
-                    1);
-
+                ConstructAchievementInNewProgress(achievement, clickCountAchievement);
                 clickCountAchievement.Construct(clickButton, 0);
             }
             if (!LoadProgressState.IsNewProgress)
             {
-                clickCountAchievement.Construct(_points, 
-                    achievement.AchievementsType,
-                    achievement.TaskName,
-                    achievement.TaskCount,
-                    achievement.TaskValues,
-                    achievement.TaskAwardPoints,
-                    achievement.Icon);
+                ConstructAchievementInOldProgress(achievement, clickCountAchievement);
                 clickCountAchievement.Construct(clickButton);
             }
 
             return clickCountAchievement.gameObject;
         }
-
+        
         private GameObject ConstructMifCoin(BlockAchievement blockAchievement, AchievementsStaticData achievement)
         {
             MifCoinAchievement mifCoinAchievement = Resources.Load<MifCoinAchievement>("Achievements/Prefabs/MifCoinAchievement");
 
             if (LoadProgressState.IsNewProgress)
             {
-                mifCoinAchievement.Construct(_points,
-                    achievement.AchievementsType,
-                    achievement.Icon,
-                    achievement.TaskName,
-                    achievement.TaskAwardPoints,
-                    achievement.TaskCount,
-                    achievement.TaskValues,
-                    achievement.IsLocked,
-                    1);
-
+                ConstructAchievementInNewProgress(achievement, mifCoinAchievement);
                 mifCoinAchievement.Construct(0);
             }
             if (!LoadProgressState.IsNewProgress)
             {
-                mifCoinAchievement.Construct(_points,
-                    achievement.AchievementsType,
-                    achievement.TaskName,
-                    achievement.TaskCount,
-                    achievement.TaskValues,
-                    achievement.TaskAwardPoints,
-                    achievement.Icon);                
+                ConstructAchievementInOldProgress(achievement, mifCoinAchievement);
             }
 
             return mifCoinAchievement.gameObject;
@@ -223,27 +198,12 @@ namespace Assets.Scripts
 
             if (LoadProgressState.IsNewProgress)
             {
-                mifCoinAutoClickAchievement.Construct(_points,
-                    achievement.AchievementsType,
-                    achievement.Icon,
-                    achievement.TaskName,
-                    achievement.TaskAwardPoints,
-                    achievement.TaskCount,
-                    achievement.TaskValues,
-                    achievement.IsLocked,
-                    1);
-
+                ConstructAchievementInNewProgress(achievement, mifCoinAutoClickAchievement);
                 mifCoinAutoClickAchievement.Construct(cards, 0);
             }
             if (!LoadProgressState.IsNewProgress)
             {
-                mifCoinAutoClickAchievement.Construct(_points,
-                    achievement.AchievementsType,
-                    achievement.TaskName,
-                    achievement.TaskCount,
-                    achievement.TaskValues,
-                    achievement.TaskAwardPoints,
-                    achievement.Icon);
+                ConstructAchievementInOldProgress(achievement, mifCoinAutoClickAchievement);
                 mifCoinAutoClickAchievement.Construct(cards);
             }
 
@@ -257,31 +217,79 @@ namespace Assets.Scripts
 
             if (LoadProgressState.IsNewProgress)
             {
-                mifCoinClickAchievement.Construct(_points,
-                    achievement.AchievementsType,
-                    achievement.Icon,
-                    achievement.TaskName,
-                    achievement.TaskAwardPoints,
-                    achievement.TaskCount,
-                    achievement.TaskValues,
-                    achievement.IsLocked,
-                    1);
-
+                ConstructAchievementInNewProgress(achievement, mifCoinClickAchievement);
                 mifCoinClickAchievement.Construct(clickButton, 0);
             }
             if (!LoadProgressState.IsNewProgress)
             {
-                mifCoinClickAchievement.Construct(_points,
-                    achievement.AchievementsType,
-                    achievement.TaskName,
-                    achievement.TaskCount,
-                    achievement.TaskValues,
-                    achievement.TaskAwardPoints,
-                    achievement.Icon);
+                ConstructAchievementInOldProgress(achievement, mifCoinClickAchievement);
                 mifCoinClickAchievement.Construct(clickButton);
             }
 
             return mifCoinClickAchievement.gameObject;
+        }
+
+        private GameObject ConstructMifCoinPerClick(AwardsPerClick awardsPerClick, BlockAchievement blockAchievement, AchievementsStaticData achievement)
+        {
+            MifCoinPerClickAchievement mifCoinPerClickAchievement =
+                Resources.Load<MifCoinPerClickAchievement>("Achievements/Prefabs/MifCoinPerClickAchievement");
+
+            if (LoadProgressState.IsNewProgress)
+            {
+                ConstructAchievementInNewProgress(achievement, mifCoinPerClickAchievement);
+                mifCoinPerClickAchievement.Construct(awardsPerClick, awardsPerClick.PointsPerClick);
+            }
+            if (!LoadProgressState.IsNewProgress)
+            {
+                ConstructAchievementInOldProgress(achievement, mifCoinPerClickAchievement);
+                mifCoinPerClickAchievement.Construct(awardsPerClick);
+            }
+
+            return mifCoinPerClickAchievement.gameObject;
+        }
+
+        private GameObject ConstructOpenMifiks(List<Card> cards, BlockAchievement blockAchievement, AchievementsStaticData achievement)
+        {
+            OpenMifiksAchievement openMifiksAchievement =
+                Resources.Load<OpenMifiksAchievement>("Achievements/Prefabs/OpenMifiksAchievement");
+
+            if (LoadProgressState.IsNewProgress)
+            {
+                ConstructAchievementInNewProgress(achievement, openMifiksAchievement);
+                openMifiksAchievement.Construct(cards, 0);
+            }
+            if (!LoadProgressState.IsNewProgress)
+            {
+                ConstructAchievementInOldProgress(achievement, openMifiksAchievement);
+                openMifiksAchievement.Construct(cards);
+            }
+
+            return openMifiksAchievement.gameObject;
+        }
+
+        private void ConstructAchievementInNewProgress<T>(AchievementsStaticData achievement, AchievementsButton<T> achievementsButton)
+        {
+            achievementsButton.Construct(_points,
+                                achievement.AchievementsType,
+                                achievement.Icon,
+                                achievement.TaskName,
+                                achievement.TaskAwardPoints,
+                                achievement.TaskCount,
+                                achievement.TaskValues,
+                                achievement.IsLocked,
+                                1);
+        }
+
+
+        private void ConstructAchievementInOldProgress<T>(AchievementsStaticData achievement, AchievementsButton<T> achievementsButton)
+        {
+            achievementsButton.Construct(_points,
+                                achievement.AchievementsType,
+                                achievement.TaskName,
+                                achievement.TaskCount,
+                                achievement.TaskValues,
+                                achievement.TaskAwardPoints,
+                                achievement.Icon);
         }
     }
 }

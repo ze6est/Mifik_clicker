@@ -1,13 +1,17 @@
 ﻿using Assets.Scripts.Achievements;
 using Assets.Scripts.Infrastructure.States;
+using UnityEngine;
 
 public class MifCoinAchievement : AchievementsButton<long>, ISavedProgress
 {
+    [SerializeField] private long _parametr;
+
     protected override long Parametr { get; set; }    
 
     public void Construct(long mifCoin)
     {        
         Parametr = mifCoin;
+        _parametr = Parametr;
     }    
 
     protected override void Start()
@@ -32,6 +36,7 @@ public class MifCoinAchievement : AchievementsButton<long>, ISavedProgress
         if (!LoadProgressState.IsNewProgress)
         {
             Parametr = progress.Achievements[(int)Type].MifCoinAchievementProgress.MifCoin;
+            _parametr = Parametr;
         }
     }
 
@@ -68,6 +73,7 @@ public class MifCoinAchievement : AchievementsButton<long>, ISavedProgress
     private void AddMifCoin(long mifCoin)
     {
         Parametr += mifCoin;
+        _parametr = Parametr;
 
         CheckPoints();
     }

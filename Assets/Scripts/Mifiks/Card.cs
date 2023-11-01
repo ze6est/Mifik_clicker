@@ -40,6 +40,7 @@ public class Card : MonoBehaviour, ISavedProgress
     private int _upgradeCountTimeCurrent;
 
     public event Action<long> PointsReceived;
+    public event Action CardUnlocked;
 
     public void Construct(MifiksName nameId, long pointsPerAutoClick, long timeAutoClick, long upgradeAutoClickCost, int upgradeCountAutoClick,
         long upgradeTimeCost, int upgradeCountTime, Image icon, LockedButton lockedButton, Points points)
@@ -142,6 +143,8 @@ public class Card : MonoBehaviour, ISavedProgress
 
     private void OnCardUnlocked()
     {
+        CardUnlocked?.Invoke();
+
         _pointsPerAutoClickHUD.text = $"+{_pointsPerAutoClick}";
 
         _timeAutoClickImage.fillAmount = 0 ;

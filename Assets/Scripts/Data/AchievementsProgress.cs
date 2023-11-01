@@ -11,6 +11,8 @@ public class AchievementProgress
     public MifCoinAchievementProgress MifCoinAchievementProgress;
     public MifCoinAutoClickAchievementProgress MifCoinAutoClickAchievementProgress;
     public MifCoinClickAchievementProgress MifCoinClickAchievementProgress;
+    public MifCoinPerClickAchievementProgress MifCoinPerClickAchievementProgress;
+    public OpenMifiksAchievementProgress OpenMifiksAchievementProgress;
 
     public AchievementProgress()
     {
@@ -18,6 +20,7 @@ public class AchievementProgress
         MifCoinAchievementProgress = new MifCoinAchievementProgress();
         MifCoinAutoClickAchievementProgress = new MifCoinAutoClickAchievementProgress();
         MifCoinClickAchievementProgress = new MifCoinClickAchievementProgress();
-
+        MifCoinPerClickAchievementProgress = new MifCoinPerClickAchievementProgress();
+        OpenMifiksAchievementProgress = new OpenMifiksAchievementProgress();
     }
 }

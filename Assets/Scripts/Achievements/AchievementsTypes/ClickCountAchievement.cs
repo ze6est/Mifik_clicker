@@ -5,9 +5,9 @@ namespace Assets.Scripts.Achievements.AchievementsTypes
 {
     public class ClickCountAchievement : AchievementsButton<int>, ISavedProgress
     {
-        protected override int Parametr { get; set; }
-
         [SerializeField] private ClickButton _clickButton;
+
+        protected override int Parametr { get; set; }
 
         public void Construct(ClickButton clickButton, int clickCount)
         {

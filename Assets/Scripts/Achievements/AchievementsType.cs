@@ -7,8 +7,6 @@
         MifCoinAutoClick,
         MifCoin,
         MifCoinPerClick,
-        OpenMifiks,
-        OpenLevel,
-        OpenAchievements
+        OpenMifiks        
     }
 }

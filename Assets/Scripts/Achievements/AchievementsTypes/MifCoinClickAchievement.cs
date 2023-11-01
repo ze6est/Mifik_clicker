@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class MifCoinClickAchievement : AchievementsButton<long>, ISavedProgress
 {
-    protected override long Parametr { get; set; }
-
     [SerializeField] private ClickButton _clickButton;
+
+    protected override long Parametr { get; set; }
 
     public void Construct(ClickButton clickButton, long mifCoin)
     {

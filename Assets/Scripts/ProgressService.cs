@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class ProgressService
 {
-    private const string ProgressKey = "Progress24";
+    private const string ProgressKey = "Progress28";
 
     private LoadFactory _loadFactory;
 
@@ -31,4 +31,10 @@ public class ProgressService
 
     public PlayerProgress LoadProgress() => 
         PlayerPrefs.GetString(ProgressKey)?.ToDeserialized<PlayerProgress>();
+
+    public void ClearProgress()
+    {
+        PlayerPrefs.DeleteKey(ProgressKey);
+        PlayerPrefs.Save();
+    }
 }
