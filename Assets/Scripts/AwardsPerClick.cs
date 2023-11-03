@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using System;
+using System.Runtime.InteropServices;
 
 [RequireComponent(typeof(TextMeshProUGUI))]
 public class AwardsPerClick : MonoBehaviour
@@ -23,6 +24,13 @@ public class AwardsPerClick : MonoBehaviour
 
     private void Start() => 
         RefreshText();
+
+    public void AddPointsPerClick()
+    {
+        _pointsPerClick++;
+        RefreshText();
+        PointsPerClickReceived?.Invoke(_pointsPerClick);
+    }
 
     private void RefreshText() => 
         _pointsPerClickHud.text = $"+{_pointsPerClick}";

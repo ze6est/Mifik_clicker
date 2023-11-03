@@ -229,7 +229,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36.45
+  m_fontSize: 99.3
   m_fontSizeBase: 45
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -445,7 +445,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 29.65
+  m_fontSize: 75.75
   m_fontSizeBase: 100
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -635,6 +635,7 @@ GameObject:
   - component: {fileID: 8143320241040853996}
   - component: {fileID: 2548237424837957595}
   - component: {fileID: 2892035087759302165}
+  - component: {fileID: 4695296282732675579}
   m_Layer: 5
   m_Name: BonusButton
   m_TagString: Untagged
@@ -745,6 +746,20 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &4695296282732675579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4097844247249392155}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6067a3316bf943a4c8109ad0a9075135, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _bonusButton: {fileID: 2892035087759302165}
+  _points: {fileID: 6914351481838517488}
 --- !u!1 &4111661465020771044
 GameObject:
   m_ObjectHideFlags: 0
@@ -838,7 +853,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 75.4
+  m_fontSize: 198.8
   m_fontSizeBase: 45
   m_fontWeight: 400
   m_enableAutoSizing: 1

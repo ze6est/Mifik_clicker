@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class SaveButton : MonoBehaviour
 {
     [SerializeField] private Button _saveButton;
+    [SerializeField] private YandexAdv _yandexAdv;
 
     private ProgressService _progressService;
     private Coroutine _saveCoroutine;
@@ -12,9 +13,10 @@ public class SaveButton : MonoBehaviour
     private void OnValidate() => 
         _saveButton = gameObject.GetComponent<Button>();
 
-    public void Construct(ProgressService progressService)
+    public void Construct(ProgressService progressService, YandexAdv yandexAdv)
     {
         _progressService = progressService;
+        _yandexAdv = yandexAdv;
     }
 
     private void Start() => 
@@ -23,7 +25,7 @@ public class SaveButton : MonoBehaviour
     private void OnDestroy()
     {
         _saveButton.onClick.RemoveListener(SaveProgress);
-        _progressService.ProgressSaved -= StopSaveProgress;
+        _saveButton.onClick.RemoveListener(SaveProgress);
     }
 
     private void SaveProgress()
@@ -31,10 +33,13 @@ public class SaveButton : MonoBehaviour
         _saveCoroutine = StartCoroutine(_progressService.SaveProgress());
 
         _progressService.ProgressSaved += StopSaveProgress;
+
+        _yandexAdv.ShowFullScreen();
     }
 
     private void StopSaveProgress()
     {
         StopCoroutine(_saveCoroutine);
+        _progressService.ProgressSaved -= StopSaveProgress;
     }    
 }
