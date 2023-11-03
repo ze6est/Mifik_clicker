@@ -1,7 +1,6 @@
 using UnityEngine;
 using TMPro;
 using System;
-using System.Runtime.InteropServices;
 
 [RequireComponent(typeof(TextMeshProUGUI))]
 public class AwardsPerClick : MonoBehaviour

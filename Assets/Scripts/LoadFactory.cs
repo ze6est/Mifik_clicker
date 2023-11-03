@@ -27,7 +27,7 @@ namespace Assets.Scripts
             GameObject achievementsContent = Resources.Load<GameObject>("HUD/AchievementsContent");
             GameObject mifiksContent = Resources.Load<GameObject>("HUD/MifiksContent");
             GameObject clickButtonObj = Resources.Load<GameObject>("HUD/ClickButton");
-            GameObject yandexAdvPrefub = Resources.Load<GameObject>("YandexAdv");
+            //GameObject yandexAdvPrefub = Resources.Load<GameObject>("YandexAdv");
 
             GameObject centerPanel = GameObject.FindGameObjectWithTag("CenterPanel");
             GameObject achievements = GameObject.FindGameObjectWithTag("Achievements");
@@ -38,7 +38,7 @@ namespace Assets.Scripts
             GameObject achievementsContentInstanse = Object.Instantiate(achievementsContent, achievements.transform);
             GameObject mifiksContentInstanse = Object.Instantiate(mifiksContent, mifiks.transform);
             GameObject clickButtonInstanse = Object.Instantiate(clickButtonObj, clickPanel.transform);
-            GameObject yandexAdvInstanse = Object.Instantiate(yandexAdvPrefub);
+            //GameObject yandexAdvInstanse = Object.Instantiate(yandexAdvPrefub);
 
             _points = centerPanelContentInstanse.GetComponentInChildren<Points>();
             AwardsPerClick awardsPerClick = centerPanelContentInstanse.GetComponentInChildren<AwardsPerClick>();
@@ -48,17 +48,17 @@ namespace Assets.Scripts
             ClickButton clickButton = clickButtonInstanse.GetComponent<ClickButton>();
             BlocksContent blocksContent = mifiksContentInstanse.GetComponentInChildren<BlocksContent>();
             BlocksAchievementsContent blocksAchievementsContent = achievementsContentInstanse.GetComponentInChildren<BlocksAchievementsContent>();
-            YandexAdv yandexAdv = yandexAdvInstanse.GetComponent<YandexAdv>();
+            //YandexAdv yandexAdv = yandexAdvInstanse.GetComponent<YandexAdv>();
 
             InstantiateBloks(blocksContent.gameObject, progressService.Progress);
             InstantiateBlocksAchievement(blocksAchievementsContent.gameObject, progressService.Progress, clickButton, awardsPerClick);
 
             _points.Construct(clickButton);
             clickButton.Construct(awardsPerClick);
-            yandexAdv.Construct(_points, awardsPerClick);
-            saveButton.Construct(progressService, yandexAdv);
+            //yandexAdv.Construct(_points, awardsPerClick);
+            saveButton.Construct(progressService);
             resetButton.Construct(progressService);
-            bonusButton.Construct(yandexAdv);
+            //bonusButton.Construct(yandexAdv);
 
             RegisterProgressSaveds(centerPanelContentInstanse);
             RegisterProgressSaveds(achievementsContentInstanse);

@@ -1,23 +1,19 @@
-﻿using System.Runtime.InteropServices;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Button))]
 public class BonusButton : MonoBehaviour
 {
-    [DllImport("__Internal")]
-    private static extern void ShowRevardedAdv(long count);
-
     [SerializeField] private Button _bonusButton;
     [SerializeField] private Points _points;
-    [SerializeField] private YandexAdv _yandexAdv;
+    //[SerializeField] private YandexAdv _yandexAdv;
 
     private void OnValidate()
     {
         _bonusButton = gameObject.GetComponent<Button>();
     }
 
-    public void Construct(YandexAdv yandexAdv)
+    /*public void Construct(YandexAdv yandexAdv)
     {
         _yandexAdv = yandexAdv;
     }
@@ -37,5 +33,5 @@ public class BonusButton : MonoBehaviour
         long bonus = (long)(_points.CurrentPoints * procent);
 
         _yandexAdv.ShowRevarded(bonus);
-    }
+    }*/
 }
