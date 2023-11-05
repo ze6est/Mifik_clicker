@@ -26,7 +26,7 @@ public class Points : MonoBehaviour, ISavedProgress
 
     private void Awake()
     {
-        _points = 1L;             
+        _points = 0;             
     }
 
     private void Start()

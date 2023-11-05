@@ -7,42 +7,24 @@ public class YandexAdv : MonoBehaviour
     [DllImport("__Internal")]
     private static extern void ShowFullScreenAdvertisement();
 
-    //[DllImport("__Internal")]
-    //private static extern void ShowRevardedAdv(int count);
+    [DllImport("__Internal")]
+    private static extern void ShowRevardedAdv();
 
-    public event Action AdvertisementRewarded;
+    public event Action AdvertisementRevarded;
+    public event Action RevardedVideoClosed;
 
-    private void Start()
-    {
-        transform.parent = null;
-    }
-
-    private void OnDestroy()
-    {
+    private void OnDestroy() => 
         ShowFullScreenAdvertisement();
-    }
 
-    public void ShowFullScreen()
-    {
+    public void ShowFullScreen() => 
         ShowFullScreenAdvertisement();
-    }
 
-    public void AddPointsPerClick()
-    {
-        AdvertisementRewarded?.Invoke();
-    }
+    public void AddPointsPerClick() => 
+        AdvertisementRevarded?.Invoke();    
 
-    /*
-    public void RefreshPoints(int count)
-    {
-        _points.RefreshPoints(count);
-    }
+    public void RefreshPoints() => 
+        RevardedVideoClosed?.Invoke();
 
-    public void ShowRevarded(long count)
-    {
-        int newCount = (int)count;
-
-        ShowRevardedAdv(newCount);
-    }
-    */
+    public void ShowRevarded() => 
+        ShowRevardedAdv();
 }

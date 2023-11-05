@@ -6,8 +6,9 @@ public class PlayerProgress
 {
     public CardProgress[] Cards;
     public AchievementProgress[] Achievements;
-
     public long Points;
+    public long PointsPerClick;
+
     private CardProgress CardProgress;
     private AchievementProgress AchievementProgress;
 

@@ -3,7 +3,7 @@ using TMPro;
 using System;
 
 [RequireComponent(typeof(TextMeshProUGUI))]
-public class AwardsPerClick : MonoBehaviour
+public class AwardsPerClick : MonoBehaviour, ISavedProgress
 {
     [SerializeField] private TextMeshProUGUI _pointsPerClickHud;
     [SerializeField] private long _pointsPerClick;
@@ -16,27 +16,35 @@ public class AwardsPerClick : MonoBehaviour
     private void OnValidate() => 
         _pointsPerClickHud = gameObject.GetComponent<TextMeshProUGUI>();
 
-    public void Construct(YandexAdv yandexAdv)
-    {        
+    public void Construct(YandexAdv yandexAdv) => 
         _yandexAdv = yandexAdv;
-    }
 
     private void Awake()
-    {
-        _pointsPerClick = 1;
+    {        
         PointsPerClickReceived?.Invoke(_pointsPerClick);
     }
 
     private void Start()
     {
-        _yandexAdv.AdvertisementRewarded += AddPointsPerClick;
+        _yandexAdv.AdvertisementRevarded += AddPointsPerClick;
 
         RefreshText();
     }
 
-    private void OnDestroy()
+    private void OnDestroy() => 
+        _yandexAdv.AdvertisementRevarded -= AddPointsPerClick;
+
+    public void UpdateProgress(PlayerProgress progress)
     {
-        _yandexAdv.AdvertisementRewarded -= AddPointsPerClick;
+        progress.PointsPerClick = _pointsPerClick;
+    }
+
+    public void LoadProgress(PlayerProgress progress)
+    {
+        _pointsPerClick = progress.PointsPerClick;
+
+        if (_pointsPerClick == 0)
+            _pointsPerClick = 1;
     }
 
     public void AddPointsPerClick()

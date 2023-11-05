@@ -57,7 +57,7 @@ namespace Assets.Scripts
             saveButton.Construct(progressService, _yandexAdv);
             resetButton.Construct(progressService);
             awardsPerClick.Construct(_yandexAdv);
-            //bonusButton.Construct(yandexAdv);
+            bonusButton.Construct(_yandexAdv);
 
             RegisterProgressSaveds(centerPanelContentInstanse);
             RegisterProgressSaveds(achievementsContentInstanse);

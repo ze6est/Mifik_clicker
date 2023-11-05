@@ -6,32 +6,38 @@ public class BonusButton : MonoBehaviour
 {
     [SerializeField] private Button _bonusButton;
     [SerializeField] private Points _points;
-    //[SerializeField] private YandexAdv _yandexAdv;
+    [SerializeField] private YandexAdv _yandexAdv;
 
-    private void OnValidate()
-    {
+    private void OnValidate() => 
         _bonusButton = gameObject.GetComponent<Button>();
-    }
 
-    /*public void Construct(YandexAdv yandexAdv)
+    public void Construct(YandexAdv yandexAdv)
     {
         _yandexAdv = yandexAdv;
     }
 
     private void Start()
     {
-        _bonusButton.onClick.AddListener(AddBonus);
+        _bonusButton.onClick.AddListener(ShowRevarded);
+        _yandexAdv.RevardedVideoClosed += OnRevardedVideoClosed;
     }
 
-    private void OnDestroy() =>
-        _bonusButton.onClick.RemoveListener(AddBonus);
+    private void OnDestroy()
+    {
+        _bonusButton.onClick.RemoveListener(ShowRevarded);
+        _yandexAdv.RevardedVideoClosed -= OnRevardedVideoClosed;
+    }
 
-    private void AddBonus()
+    private void ShowRevarded()
+    {
+        _yandexAdv.ShowRevarded();        
+    }
+
+    private void OnRevardedVideoClosed()
     {
         float procent = Random.Range(0.01f, 0.1f);
 
         long bonus = (long)(_points.CurrentPoints * procent);
-
-        _yandexAdv.ShowRevarded(bonus);
-    }*/
+        _points.RefreshPoints(bonus);
+    }
 }
