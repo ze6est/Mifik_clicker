@@ -19,13 +19,13 @@ public class BonusButton : MonoBehaviour
     private void Start()
     {
         _bonusButton.onClick.AddListener(ShowRevarded);
-        _yandexAdv.RevardedVideoClosed += OnRevardedVideoClosed;
+        _yandexAdv.ShowRevardedAdvRewarded += OnRevardedVideoClosed;
     }
 
     private void OnDestroy()
     {
         _bonusButton.onClick.RemoveListener(ShowRevarded);
-        _yandexAdv.RevardedVideoClosed -= OnRevardedVideoClosed;
+        _yandexAdv.ShowRevardedAdvRewarded -= OnRevardedVideoClosed;
     }
 
     private void ShowRevarded()

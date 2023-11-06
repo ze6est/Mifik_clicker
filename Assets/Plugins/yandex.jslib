@@ -3,11 +3,11 @@ mergeInto(LibraryManager.library, {
   ShowFullScreenAdvertisement: function () {
     ysdk.adv.showFullscreenAdv({
       callbacks: {
-        onOpen: function() {
-          myGameInstance.SendMessage('YandexAdv', 'AddPointsPerClick');
+        onOpen: function() {          
+          myGameInstance.SendMessage('YandexAdv', 'OpenFullScreenAdvertisement');
         },
         onClose: function(wasShown) {
-          
+          myGameInstance.SendMessage('YandexAdv', 'CloseFullScreenAdvertisement');
         },
         onError: function(error) {
           // some action on error
@@ -20,14 +20,13 @@ mergeInto(LibraryManager.library, {
     ysdk.adv.showRewardedVideo({
       callbacks: {
         onOpen: () => {
-          console.log('Video ad open.');
+          myGameInstance.SendMessage('YandexAdv', 'OpenShowRevardedAdv');
         },
         onRewarded: () => {
-          myGameInstance.SendMessage('YandexAdv', 'AddPointsPerClick');
-		      myGameInstance.SendMessage('YandexAdv', 'RefreshPoints');
+          myGameInstance.SendMessage('YandexAdv', 'RewardedShowRevardedAdv');		      
         },
         onClose: () => {
-          console.log('Video ad closed.');
+          myGameInstance.SendMessage('YandexAdv', 'CloseShowRevardedAdv');
         }, 
         onError: (e) => {
           console.log('Error while open video ad:', e);

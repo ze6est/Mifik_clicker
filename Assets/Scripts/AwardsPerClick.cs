@@ -19,20 +19,22 @@ public class AwardsPerClick : MonoBehaviour, ISavedProgress
     public void Construct(YandexAdv yandexAdv) => 
         _yandexAdv = yandexAdv;
 
-    private void Awake()
-    {        
+    private void Awake() => 
         PointsPerClickReceived?.Invoke(_pointsPerClick);
-    }
 
     private void Start()
     {
-        _yandexAdv.AdvertisementRevarded += AddPointsPerClick;
+        _yandexAdv.ShowRevardedAdvRewarded += AddPointsPerClick;
+        _yandexAdv.FullScreenAdvertisementOpened += AddPointsPerClick;
 
         RefreshText();
     }
 
-    private void OnDestroy() => 
-        _yandexAdv.AdvertisementRevarded -= AddPointsPerClick;
+    private void OnDestroy()
+    {
+        _yandexAdv.ShowRevardedAdvRewarded -= AddPointsPerClick;
+        _yandexAdv.FullScreenAdvertisementOpened -= AddPointsPerClick;
+    }
 
     public void UpdateProgress(PlayerProgress progress)
     {
