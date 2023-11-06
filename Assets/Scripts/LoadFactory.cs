@@ -47,7 +47,8 @@ namespace Assets.Scripts
             BonusButton bonusButton = centerPanelContentInstanse.GetComponentInChildren<BonusButton>();
             ClickButton clickButton = clickButtonInstanse.GetComponent<ClickButton>();
             BlocksContent blocksContent = mifiksContentInstanse.GetComponentInChildren<BlocksContent>();
-            BlocksAchievementsContent blocksAchievementsContent = achievementsContentInstanse.GetComponentInChildren<BlocksAchievementsContent>();            
+            BlocksAchievementsContent blocksAchievementsContent = achievementsContentInstanse.GetComponentInChildren<BlocksAchievementsContent>();
+            BonusPanel bonusPanel = centerPanelContentInstanse.GetComponentInChildren<BonusPanel>();
 
             InstantiateBloks(blocksContent.gameObject, progressService.Progress);
             InstantiateBlocksAchievement(blocksAchievementsContent.gameObject, progressService.Progress, clickButton, awardsPerClick);
@@ -58,6 +59,7 @@ namespace Assets.Scripts
             resetButton.Construct(progressService);
             awardsPerClick.Construct(_yandexAdv);
             bonusButton.Construct(_yandexAdv);
+            bonusPanel.Construct(_yandexAdv, bonusButton);
 
             RegisterProgressSaveds(centerPanelContentInstanse);
             RegisterProgressSaveds(achievementsContentInstanse);
