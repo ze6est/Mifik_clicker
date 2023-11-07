@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(AudioSource))]
 public class LockedButton : MonoBehaviour
 {
     [SerializeField] private Button _button;
@@ -12,8 +13,17 @@ public class LockedButton : MonoBehaviour
     [SerializeField] private bool _isLocked;
     [SerializeField] private Points _points;
     [SerializeField] private long _pointsPerUnlocked;
+    [SerializeField] private AudioSource _audioSource;
 
     public event Action CardUnlocked;
+
+    private void OnValidate()
+    {
+        _button = gameObject.GetComponent<Button>();
+        _pointsPerUnlockedHud = gameObject.GetComponentInChildren<TextMeshProUGUI>();
+        _icon = gameObject.GetComponent<Image>();
+        _audioSource = gameObject.GetComponent<AudioSource>();
+    }
 
     public void Construct(Points points, long pointsPerUnlocked, bool isLocked)
     {
@@ -23,13 +33,6 @@ public class LockedButton : MonoBehaviour
         _isLocked = isLocked;
         _icon.sprite = Resources.Load<Sprite>("Images/LockedButton/Images");
         _lockedImage.sprite = Resources.Load<Sprite>("Images/LockedButton/GUI/Locked");        
-    }
-
-    private void OnValidate()
-    {
-        _button = gameObject.GetComponent<Button>();
-        _pointsPerUnlockedHud = gameObject.GetComponentInChildren<TextMeshProUGUI>();
-        _icon = gameObject.GetComponent<Image>();
     }
 
     private void Awake()
@@ -52,14 +55,16 @@ public class LockedButton : MonoBehaviour
 
     private void Disable()
     {
-        if(_points.CurrentPoints >= _pointsPerUnlocked)
+        if (_points.CurrentPoints >= _pointsPerUnlocked)
         {
             CardUnlocked?.Invoke();
 
             _points.RefreshPoints(-_pointsPerUnlocked);
 
             gameObject.SetActive(false);
-            _isLocked = false;            
+            _isLocked = false;
         }
+        else
+            _audioSource.Play();
     }
 }

@@ -5,6 +5,7 @@ using TMPro;
 using System.Collections;
 using Assets.Scripts.Infrastructure.States;
 
+[RequireComponent(typeof(AudioSource))]
 public class Card : MonoBehaviour, ISavedProgress
 {    
     [Header("Id")]
@@ -34,6 +35,11 @@ public class Card : MonoBehaviour, ISavedProgress
     [SerializeField] private int _upgradeCountTime;
     [Header("Locked")]
     [SerializeField] private bool _isLocked;
+    [Header("Audio")]
+    [SerializeField] private AudioSource _audioSource;
+    [SerializeField] private AudioClip _openCard;
+    [SerializeField] private AudioClip _levelUp;
+    [SerializeField] private AudioClip _error;
 
     private Coroutine _getPoints;
     private int _upgradeCountAutoClickCurrent;
@@ -41,6 +47,9 @@ public class Card : MonoBehaviour, ISavedProgress
 
     public event Action<long> PointsReceived;
     public event Action CardUnlocked;
+
+    private void OnValidate() => 
+        _audioSource = gameObject.GetComponent<AudioSource>();
 
     public void Construct(MifiksName nameId, long pointsPerAutoClick, long timeAutoClick, long upgradeAutoClickCost, int upgradeCountAutoClick,
         long upgradeTimeCost, int upgradeCountTime, Image icon, LockedButton lockedButton, Points points)
@@ -84,7 +93,7 @@ public class Card : MonoBehaviour, ISavedProgress
         _lockedButton.CardUnlocked += OnCardUnlocked;
         _upgradePointsPerClickButton.onClick.AddListener(UpgradeAutoClick);
         _upgradeTimeButton.onClick.AddListener(UpgradeTime);
-    }
+    }    
 
     private void OnDestroy()
     {
@@ -145,6 +154,8 @@ public class Card : MonoBehaviour, ISavedProgress
     {
         CardUnlocked?.Invoke();
 
+        _audioSource.PlayOneShot(_openCard);
+
         _pointsPerAutoClickHUD.text = $"+{_pointsPerAutoClick}";
 
         _timeAutoClickImage.fillAmount = 0 ;
@@ -158,6 +169,8 @@ public class Card : MonoBehaviour, ISavedProgress
     {
         if (_points.CurrentPoints >= _upgradeAutoClickCost && _upgradeCountAutoClick > _upgradeCountAutoClickCurrent)
         {
+            _audioSource.PlayOneShot(_levelUp);
+
             _upgradeCountAutoClickCurrent += 1;
 
             _pointsPerAutoClick *= 2;
@@ -171,13 +184,17 @@ public class Card : MonoBehaviour, ISavedProgress
 
             if(_upgradeCountAutoClick <= _upgradeCountAutoClickCurrent)
                 _upgradeAutoClickCostHUD.text = $"max";
-        }        
+        }
+        else
+            _audioSource.PlayOneShot(_error);
     }
 
     private void UpgradeTime()
     {
         if(_points.CurrentPoints >= _upgradeTimeCost && _upgradeCountTime > _upgradeCountTimeCurrent)
         {
+            _audioSource.PlayOneShot(_levelUp);
+
             _upgradeCountTimeCurrent += 1;
 
             _timeAutoClick -= 1;
@@ -192,6 +209,8 @@ public class Card : MonoBehaviour, ISavedProgress
             if(_upgradeCountTime <= _upgradeCountTimeCurrent)
                 _upgradeTimeCostHUD.text = $"max";
         }
+        else
+            _audioSource.PlayOneShot(_error);
     }
 
     private IEnumerator GetPoints()

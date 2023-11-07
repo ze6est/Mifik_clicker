@@ -54,6 +54,8 @@ namespace Assets.Scripts.Achievements.AchievementsTypes
 
         protected override void GetAwardPoints()
         {
+            AudioSourceAchievement.PlayOneShot(GetAchievement);
+
             Points.RefreshPoints(TaskAwardPoints[AchievementNumber - 1]);
 
             AchievementNumber++;
@@ -69,9 +71,10 @@ namespace Assets.Scripts.Achievements.AchievementsTypes
             {
                 if (Parametr >= TaskValues[AchievementNumber - 1])
                 {
+                    AudioSourceAchievement.PlayOneShot(OpenAchievement);
                     IsLocked = false;
                     Button.interactable = true;
-                    TaskNameHUD.text = $"Заберите {TaskAwardPoints[AchievementNumber - 1]} поинтов";
+                    TaskNameHUD.text = $"Заберите {TaskAwardPoints[AchievementNumber - 1]} поинтов";                    
                 }
                 else
                 {
@@ -88,6 +91,7 @@ namespace Assets.Scripts.Achievements.AchievementsTypes
                 _clickButton.ButtonClicked -= AddClick;
             else if (Parametr >= TaskValues[AchievementNumber - 1])
             {
+                TryGetPlayOpenAchievementSound();
                 IsLocked = false;
                 Button.interactable = true;
                 TaskNameHUD.text = $"Заберите {TaskAwardPoints[AchievementNumber - 1]} поинтов";                

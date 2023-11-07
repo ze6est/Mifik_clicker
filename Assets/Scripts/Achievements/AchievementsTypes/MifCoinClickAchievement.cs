@@ -46,6 +46,8 @@ public class MifCoinClickAchievement : AchievementsButton<long>, ISavedProgress
 
     protected override void GetAwardPoints()
     {
+        AudioSourceAchievement.PlayOneShot(GetAchievement);
+
         Points.RefreshPoints(TaskAwardPoints[AchievementNumber - 1]);
 
         AchievementNumber++;
@@ -61,9 +63,10 @@ public class MifCoinClickAchievement : AchievementsButton<long>, ISavedProgress
         {
             if (Parametr >= TaskValues[AchievementNumber - 1])
             {
+                AudioSourceAchievement.PlayOneShot(OpenAchievement);
                 IsLocked = false;
                 Button.interactable = true;
-                TaskNameHUD.text = $"Заберите {TaskAwardPoints[AchievementNumber - 1]} поинтов";
+                TaskNameHUD.text = $"Заберите {TaskAwardPoints[AchievementNumber - 1]} поинтов";                
             }
             else
             {
@@ -87,6 +90,7 @@ public class MifCoinClickAchievement : AchievementsButton<long>, ISavedProgress
             _clickButton.ButtonClicked -= AddMifCoin;
         else if (Parametr >= TaskValues[AchievementNumber - 1])
         {
+            TryGetPlayOpenAchievementSound();
             IsLocked = false;
             Button.interactable = true;
             TaskNameHUD.text = $"Заберите {TaskAwardPoints[AchievementNumber - 1]} поинтов";

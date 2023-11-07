@@ -46,6 +46,8 @@ public class MifCoinPerClickAchievement : AchievementsButton<long>, ISavedProgre
 
     protected override void GetAwardPoints()
     {
+        AudioSourceAchievement.PlayOneShot(GetAchievement);
+
         Points.RefreshPoints(TaskAwardPoints[AchievementNumber - 1]);
 
         AchievementNumber++;
@@ -61,9 +63,10 @@ public class MifCoinPerClickAchievement : AchievementsButton<long>, ISavedProgre
         {
             if (Parametr >= TaskValues[AchievementNumber - 1])
             {
+                AudioSourceAchievement.PlayOneShot(OpenAchievement);
                 IsLocked = false;
                 Button.interactable = true;
-                TaskNameHUD.text = $"Заберите {TaskAwardPoints[AchievementNumber - 1]} поинтов";
+                TaskNameHUD.text = $"Заберите {TaskAwardPoints[AchievementNumber - 1]} поинтов";                
             }
             else
             {
@@ -86,6 +89,7 @@ public class MifCoinPerClickAchievement : AchievementsButton<long>, ISavedProgre
             _awardsPerClick.PointsPerClickReceived -= GetPointsPerClick;
         else if (Parametr >= TaskValues[AchievementNumber - 1])
         {
+            TryGetPlayOpenAchievementSound();
             IsLocked = false;
             Button.interactable = true;
             TaskNameHUD.text = $"Заберите {TaskAwardPoints[AchievementNumber - 1]} поинтов";

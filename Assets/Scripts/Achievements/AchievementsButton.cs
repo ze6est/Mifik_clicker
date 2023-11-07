@@ -5,6 +5,7 @@ using Assets.Scripts.Infrastructure.States;
 
 namespace Assets.Scripts.Achievements
 {
+    [RequireComponent(typeof(AudioSource))]
     public abstract class AchievementsButton<T> : MonoBehaviour, ISavedProgress
     {
         [SerializeField] protected Points Points;
@@ -17,9 +18,23 @@ namespace Assets.Scripts.Achievements
         [SerializeField] protected int[] TaskValues;
         [SerializeField] protected long[] TaskAwardPoints;
         [SerializeField] protected bool IsLocked;
-        [SerializeField] protected int AchievementNumber;        
+        [SerializeField] protected int AchievementNumber;
+        [SerializeField] protected AudioSource AudioSourceAchievement;
+        [SerializeField] protected AudioClip OpenAchievement;
+        [SerializeField] protected AudioClip GetAchievement;
 
         protected abstract T Parametr { get; set; }
+
+        protected void OnValidate()
+        {
+            Button = gameObject.GetComponent<Button>();
+            Icon = gameObject.GetComponentInChildren<Image>();
+            TaskNameHUD = gameObject.GetComponentInChildren<TextMeshProUGUI>();
+            AudioSourceAchievement = gameObject.GetComponent<AudioSource>();
+
+            OpenAchievement = Resources.Load<AudioClip>("StreamingAssets/OpenAchievement");
+            GetAchievement = Resources.Load<AudioClip>("StreamingAssets/GetAchievement");
+        }
 
         public void Construct(Points points, AchievementsType type, Image icon, string taskName, long[] taskAwardPoints, int taskCount, int[] taskValues, bool isLocked, int achievementNumber)
         {
@@ -46,13 +61,7 @@ namespace Assets.Scripts.Achievements
             TaskValues = taskValues;
             TaskAwardPoints = taskAwardPoints;
             Icon = icon;
-        }
-        protected void OnValidate()
-        {
-            Button = gameObject.GetComponent<Button>();
-            Icon = gameObject.GetComponentInChildren<Image>();
-            TaskNameHUD = gameObject.GetComponentInChildren<TextMeshProUGUI>();
-        }
+        }        
 
         protected virtual void Start()
         {
@@ -78,6 +87,12 @@ namespace Assets.Scripts.Achievements
         }
 
         protected abstract void GetAwardPoints();
+
+        protected void TryGetPlayOpenAchievementSound()
+        {
+            if (IsLocked)
+                AudioSourceAchievement.PlayOneShot(OpenAchievement);
+        }
 
         public virtual void LoadProgress(PlayerProgress progress)
         {

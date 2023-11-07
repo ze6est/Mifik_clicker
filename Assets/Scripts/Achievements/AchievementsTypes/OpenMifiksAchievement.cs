@@ -51,6 +51,8 @@ public class OpenMifiksAchievement : AchievementsButton<int>, ISavedProgress
 
     protected override void GetAwardPoints()
     {
+        AudioSourceAchievement.PlayOneShot(GetAchievement);
+
         Points.RefreshPoints(TaskAwardPoints[AchievementNumber - 1]);
 
         AchievementNumber++;
@@ -66,9 +68,10 @@ public class OpenMifiksAchievement : AchievementsButton<int>, ISavedProgress
         {
             if (Parametr >= TaskValues[AchievementNumber - 1])
             {
+                AudioSourceAchievement.PlayOneShot(OpenAchievement);
                 IsLocked = false;
                 Button.interactable = true;
-                TaskNameHUD.text = $"Заберите {TaskAwardPoints[AchievementNumber - 1]} поинтов";
+                TaskNameHUD.text = $"Заберите {TaskAwardPoints[AchievementNumber - 1]} поинтов";                
             }
             else
             {
@@ -86,7 +89,6 @@ public class OpenMifiksAchievement : AchievementsButton<int>, ISavedProgress
         CheckPoints();
     }
 
-
     private void CheckPoints()
     {
         if (AchievementNumber > TaskValues.Length)
@@ -98,6 +100,7 @@ public class OpenMifiksAchievement : AchievementsButton<int>, ISavedProgress
         }
         else if (Parametr >= TaskValues[AchievementNumber - 1])
         {
+            TryGetPlayOpenAchievementSound();
             IsLocked = false;
             Button.interactable = true;
             TaskNameHUD.text = $"Заберите {TaskAwardPoints[AchievementNumber - 1]} поинтов";

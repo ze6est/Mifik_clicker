@@ -3,20 +3,31 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Button))]
+[RequireComponent(typeof(AudioSource))]
 public class BonusButton : MonoBehaviour
 {
     [SerializeField] private Button _bonusButton;
     [SerializeField] private Points _points;
     [SerializeField] private YandexAdv _yandexAdv;
+    [SerializeField] private ExitPanelButton _exitPanelButton;
+    [SerializeField] private AudioSource _audioSource;
 
     public event Action<long> RevardedVideoClosed;
 
-    private void OnValidate() => 
+    private void OnValidate()
+    {
         _bonusButton = gameObject.GetComponent<Button>();
+        _audioSource = gameObject.GetComponent<AudioSource>();
+    }
 
     public void Construct(YandexAdv yandexAdv)
     {
         _yandexAdv = yandexAdv;
+    }
+
+    private void Awake()
+    {
+        _exitPanelButton.PanelClosed += OnPanelClosed;
     }
 
     private void Start()
@@ -30,6 +41,9 @@ public class BonusButton : MonoBehaviour
         _bonusButton.onClick.RemoveListener(ShowRevarded);
         _yandexAdv.ShowRevardedAdvRewarded -= OnRevardedVideoClosed;
     }
+
+    private void OnPanelClosed() =>
+        _audioSource.Play();
 
     private void ShowRevarded()
     {
