@@ -31,8 +31,8 @@ public class LockedButton : MonoBehaviour
         _pointsPerUnlocked = pointsPerUnlocked;
         _pointsPerUnlockedHud.text = $"{_pointsPerUnlocked}";
         _isLocked = isLocked;
-        _icon.sprite = Resources.Load<Sprite>("Images/LockedButton/Images");
-        _lockedImage.sprite = Resources.Load<Sprite>("Images/LockedButton/GUI/Locked");        
+        _icon.sprite = Resources.Load<Sprite>("Images/LockedButton/LockedButton");
+        _lockedImage.sprite = Resources.Load<Sprite>("Images/LockedButton/Locked");        
     }
 
     private void Awake()
