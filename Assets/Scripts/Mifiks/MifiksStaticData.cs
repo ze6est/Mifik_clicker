@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 [CreateAssetMenu(fileName = "MifiksData", menuName = "StaticData/Mifik", order = 51)]
 public class MifiksStaticData : ScriptableObject
@@ -16,6 +15,6 @@ public class MifiksStaticData : ScriptableObject
     public long UpgradeTimeCost;
     public int UpgradeCountTime;
     [Header("Image")]
-    public Image Icon;
+    public Sprite Icon;
     public bool IsLocked;
 }

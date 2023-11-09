@@ -23,7 +23,7 @@ public class Card : MonoBehaviour, ISavedProgress
     [SerializeField] private TextMeshProUGUI _upgradeAutoClickCostHUD;
     [SerializeField] private TextMeshProUGUI _upgradeTimeCostHUD;
     [Header("Images")]
-    [SerializeField] private Image _icon;
+    [SerializeField] private Image _image;
     [SerializeField] private Image _timeAutoClickImage;
     [Header("AutoClick")]
     [SerializeField] private long _pointsPerAutoClick;
@@ -40,6 +40,7 @@ public class Card : MonoBehaviour, ISavedProgress
     [SerializeField] private AudioClip _openCard;
     [SerializeField] private AudioClip _levelUp;
     [SerializeField] private AudioClip _error;
+    [SerializeField] private Sprite _icon;
 
     private Coroutine _getPoints;
     private int _upgradeCountAutoClickCurrent;
@@ -52,7 +53,7 @@ public class Card : MonoBehaviour, ISavedProgress
         _audioSource = gameObject.GetComponent<AudioSource>();
 
     public void Construct(MifiksName nameId, long pointsPerAutoClick, long timeAutoClick, long upgradeAutoClickCost, int upgradeCountAutoClick,
-        long upgradeTimeCost, int upgradeCountTime, Image icon, LockedButton lockedButton, Points points)
+        long upgradeTimeCost, int upgradeCountTime, Sprite icon, LockedButton lockedButton, Points points)
     {
         _lockedButton = lockedButton;        
         _points = points;
@@ -69,7 +70,7 @@ public class Card : MonoBehaviour, ISavedProgress
         
         _upgradeTimeCost = upgradeTimeCost;
         _upgradeCountTime = upgradeCountTime;
-
+        
         _icon = icon;
 
         _isLocked = true;
@@ -77,7 +78,7 @@ public class Card : MonoBehaviour, ISavedProgress
         RefreshText();
     }
 
-    public void Construct(MifiksName nameId, Image icon, Points points, int upgradeCountAutoClick, int upgradeCountTime)
+    public void Construct(MifiksName nameId, Sprite icon, Points points, int upgradeCountAutoClick, int upgradeCountTime)
     {
         _nameId = nameId;
         _name.text = Enum.GetName(typeof(MifiksName), nameId);
@@ -93,6 +94,8 @@ public class Card : MonoBehaviour, ISavedProgress
         _lockedButton.CardUnlocked += OnCardUnlocked;
         _upgradePointsPerClickButton.onClick.AddListener(UpgradeAutoClick);
         _upgradeTimeButton.onClick.AddListener(UpgradeTime);
+
+        _image.sprite = _icon;
     }    
 
     private void OnDestroy()
@@ -173,12 +176,12 @@ public class Card : MonoBehaviour, ISavedProgress
 
             _upgradeCountAutoClickCurrent += 1;
 
-            _pointsPerAutoClick *= 2;
+            _pointsPerAutoClick = _pointsPerAutoClick + 1 + (long)(_pointsPerAutoClick * 0.5);
             _pointsPerAutoClickHUD.text = $"+{_pointsPerAutoClick}";            
 
             _points.RefreshPoints(-_upgradeAutoClickCost);
 
-            _upgradeAutoClickCost *= 2;
+            _upgradeAutoClickCost = _upgradeAutoClickCost + 1 + (long)(_upgradeAutoClickCost * 0.75);
 
             _upgradeAutoClickCostHUD.text = $"{_upgradeAutoClickCost}";
 
@@ -202,7 +205,7 @@ public class Card : MonoBehaviour, ISavedProgress
 
             _points.RefreshPoints(-_upgradeTimeCost);
 
-            _upgradeTimeCost *= 2;
+            _upgradeTimeCost = _upgradeTimeCost + 1 + (long)(_upgradeTimeCost * 0.2);
 
             _upgradeTimeCostHUD.text = $"{_upgradeTimeCost}";
 

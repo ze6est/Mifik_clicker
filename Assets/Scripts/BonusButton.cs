@@ -52,7 +52,7 @@ public class BonusButton : MonoBehaviour
 
     private void OnRevardedVideoClosed()
     {
-        float procent = UnityEngine.Random.Range(1, 11);
+        float procent = UnityEngine.Random.Range(5, 16);
 
         long bonus = (long)(_points.CurrentPoints * procent / 100);
 
