@@ -9,6 +9,8 @@ public class AwardsPerClick : MonoBehaviour, ISavedProgress
     [SerializeField] private long _pointsPerClick;
     [SerializeField] private YandexAdv _yandexAdv;
 
+    private int _advCount = 0;
+
     public long PointsPerClick => _pointsPerClick;
 
     public event Action<long> PointsPerClickReceived;
@@ -24,26 +26,28 @@ public class AwardsPerClick : MonoBehaviour, ISavedProgress
 
     private void Start()
     {
-        _yandexAdv.ShowRevardedAdvRewarded += AddPointsPerClick;
-        _yandexAdv.FullScreenAdvertisementOpened += AddPointsPerClick;
+        _yandexAdv.ShowRevardedAdvRewarded += AddPointsPerClickAdv;
+        _yandexAdv.FullScreenAdvertisementOpened += AddPointsPerClickAdv;
 
         RefreshText();
     }
 
     private void OnDestroy()
     {
-        _yandexAdv.ShowRevardedAdvRewarded -= AddPointsPerClick;
-        _yandexAdv.FullScreenAdvertisementOpened -= AddPointsPerClick;
+        _yandexAdv.ShowRevardedAdvRewarded -= AddPointsPerClickAdv;
+        _yandexAdv.FullScreenAdvertisementOpened -= AddPointsPerClickAdv;
     }
 
     public void UpdateProgress(PlayerProgress progress)
     {
         progress.PointsPerClick = _pointsPerClick;
+        progress.AdvCount = _advCount;
     }
 
     public void LoadProgress(PlayerProgress progress)
     {
         _pointsPerClick = progress.PointsPerClick;
+        _advCount = progress.AdvCount;
 
         if (_pointsPerClick == 0)
             _pointsPerClick = 1;
@@ -52,6 +56,14 @@ public class AwardsPerClick : MonoBehaviour, ISavedProgress
     public void AddPointsPerClick()
     {
         _pointsPerClick++;
+        RefreshText();
+        PointsPerClickReceived?.Invoke(_pointsPerClick);
+    }
+
+    private void AddPointsPerClickAdv()
+    {
+        _advCount++;
+        _pointsPerClick += _advCount;
         RefreshText();
         PointsPerClickReceived?.Invoke(_pointsPerClick);
     }

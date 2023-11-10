@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: Mifik4
   m_EditorClassIdentifier: 
   NameId: 3
-  CostUnlocked: 500
-  PointsPerAutoClick: 5
-  UpgradeAutoClickCost: 5
+  CostUnlocked: 1000
+  PointsPerAutoClick: 4
+  UpgradeAutoClickCost: 2
   UpgradeCountAutoClick: 6
-  TimeSecondsAutoClick: 80
-  UpgradeTimeCost: 5
-  UpgradeCountTime: 4
+  TimeSecondsAutoClick: 35
+  UpgradeTimeCost: 2
+  UpgradeCountTime: 16
   Icon: {fileID: 21300000, guid: 780a9bc865f4c7e458dee903972635e6, type: 3}
   IsLocked: 1

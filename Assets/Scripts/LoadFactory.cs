@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Assets.Scripts.Achievements;
 using Assets.Scripts.Achievements.AchievementsTypes;
 using Assets.Scripts.Infrastructure.States;
@@ -72,12 +73,16 @@ namespace Assets.Scripts
             Block block = Resources.Load<Block>("Block");
 
             _staticDataService.LoadMifiks();
-            List<MifiksStaticData> mifiks = _staticDataService.GetMifiks();
+            List<MifiksStaticData> mifiksD = _staticDataService.GetMifiks();
+
+            List<MifiksStaticData> mifiks = new List<MifiksStaticData>();
+
+            mifiks.AddRange(mifiksD.OrderBy(x => x.CostUnlocked));
 
             foreach (MifiksStaticData mifik in mifiks)
             {
                 LockedButton lockedButton = block.GetComponentInChildren<LockedButton>();
-                Card card = block.GetComponentInChildren<Card>();
+                Card card = block.GetComponentInChildren<Card>();                
 
                 if (LoadProgressState.IsNewProgress)
                 {
